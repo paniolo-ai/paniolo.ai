@@ -4,11 +4,14 @@
   "description": "Paniolo — Agentic Harness Engineering landing page",
   "scripts": {
     "build:ts": "tsc",
+    "build": "node scripts/prepare-dist.mjs",
     "watch:ts": "tsc --watch",
-    "dev": "npx serve . -l 3000"
+    "dev": "npx serve . -l 3000",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name=paniolo --branch=main --commit-dirty=true"
   },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "wrangler": "^4.86.0"
   },
   "license": "UNLICENSED",
   "private": true
