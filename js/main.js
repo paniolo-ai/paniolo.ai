@@ -1,96 +1,91 @@
 "use strict";
 
-/**
- * ── Helper: Get Nav Height ──────────────────────────────────────────
- * Centralizes the offset logic for both scroll reveal and anchor links.
- */
-function getNavOffset() {
-  var nav = document.querySelector('nav');
-  return nav ? nav.offsetHeight : 64;
-}
+// ── Page load fade-in ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('loaded');
+});
 
-// ── Nav scroll background ──────────────────────────────────────────
-var nav = document.querySelector('nav');
+// ── Nav scroll ──────────────────────────────────────────────────────
+var nav = document.querySelector('body > nav');
 if (nav) {
   var onScroll = function() {
-    // Adds 'scrolled' class after 20px of movement
-    window.scrollY > 20 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
+    if (window.scrollY > 20) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 }
 
-// ── Mobile Menu Logic ─────────────────────────────────────────────
+// ── Mobile hamburger ────────────────────────────────────────────────
 var toggle = document.querySelector('.nav-toggle');
 var navLinks = document.querySelector('.nav-links');
 
 if (toggle && navLinks) {
-  var closeMenu = function() {
-    navLinks.classList.remove('open');
-    toggle.setAttribute('aria-expanded', 'false');
-    var bars = toggle.querySelectorAll('span');
-    for (var i = 0; i < bars.length; i++) bars[i].removeAttribute('style');
-  };
-
   toggle.addEventListener('click', function(e) {
     e.stopPropagation();
     var isOpen = navLinks.classList.toggle('open');
     toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     var bars = toggle.querySelectorAll('span');
-    
-    if (isOpen && bars.length >= 3) {
-      bars[0].style.cssText = 'transform:rotate(45deg) translate(4px,4px)';
-      bars[1].style.opacity = '0';
-      bars[2].style.cssText = 'transform:rotate(-45deg) translate(4px,-4px)';
+    if (isOpen) {
+      if (bars[0]) bars[0].style.cssText = 'transform:rotate(45deg) translate(4px,4px)';
+      if (bars[1]) bars[1].style.cssText = 'opacity:0';
+      if (bars[2]) bars[2].style.cssText = 'transform:rotate(-45deg) translate(4px,-4px)';
     } else {
-      closeMenu();
-    }
-  });
-
-  // Close menu when clicking links or anywhere outside
-  document.addEventListener('click', function(e) {
-    if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && !toggle.contains(e.target)) {
-      closeMenu();
+      for (var i = 0; i < bars.length; i++) { bars[i].removeAttribute('style'); }
     }
   });
 
   var links = navLinks.querySelectorAll('a');
   for (var i = 0; i < links.length; i++) {
-    links[i].addEventListener('click', closeMenu);
+    links[i].addEventListener('click', function() {
+      navLinks.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      var bars = toggle.querySelectorAll('span');
+      for (var j = 0; j < bars.length; j++) { bars[j].removeAttribute('style'); }
+    });
   }
+
+  document.addEventListener('click', function(e) {
+    if (nav && !nav.contains(e.target)) {
+      navLinks.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      var bars = toggle.querySelectorAll('span');
+      for (var i = 0; i < bars.length; i++) { bars[i].removeAttribute('style'); }
+    }
+  });
 }
 
-// ── Scroll Reveal (Fade-in animations) ─────────────────────────────
+// ── Scroll reveal ────────────────────────────────────────────────────
 if ('IntersectionObserver' in window) {
   var revealObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         var delay = parseInt(entry.target.getAttribute('data-delay') || '0', 10);
-        setTimeout(function() {
-          entry.target.classList.add('visible');
-        }, delay);
+        setTimeout(function() { entry.target.classList.add('visible'); }, delay);
         revealObs.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
   var revealEls = document.querySelectorAll('.reveal');
-  for (var i = 0; i < revealEls.length; i++) {
-    revealEls[i].setAttribute('data-delay', String(i * 60));
-    revealObs.observe(revealEls[i]);
+  for (var ri = 0; ri < revealEls.length; ri++) {
+    revealEls[ri].setAttribute('data-delay', String(ri * 55));
+    revealObs.observe(revealEls[ri]);
   }
 }
 
-// ── Counter Animation ──────────────────────────────────────────────
+// ── Counter animation ────────────────────────────────────────────────
 function animateCounter(el, target, suffix, prefix, decimals) {
+  suffix = suffix || ''; prefix = prefix || ''; decimals = decimals || 0;
   var duration = 1600;
   var start = performance.now();
-  var easeOut = function(t) { return 1 - Math.pow(1 - t, 3); };
-  
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
   function tick(now) {
     var p = Math.min((now - start) / duration, 1);
-    var val = (target * easeOut(p)).toFixed(decimals || 0);
-    el.textContent = (prefix || '') + val + (suffix || '');
+    el.textContent = prefix + (target * easeOut(p)).toFixed(decimals) + suffix;
     if (p < 1) requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
@@ -101,23 +96,58 @@ if ('IntersectionObserver' in window) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         var el = entry.target;
-        animateCounter(
-          el,
+        animateCounter(el,
           parseFloat(el.getAttribute('data-count') || '0'),
-          el.getAttribute('data-suffix'),
-          el.getAttribute('data-prefix'),
-          parseInt(el.getAttribute('data-decimals'), 10)
+          el.getAttribute('data-suffix') || '',
+          el.getAttribute('data-prefix') || '',
+          parseInt(el.getAttribute('data-decimals') || '0', 10)
         );
         counterObs.unobserve(el);
       }
     });
   }, { threshold: 0.5 });
-
   var countEls = document.querySelectorAll('[data-count]');
-  for (var i = 0; i < countEls.length; i++) counterObs.observe(countEls[i]);
+  for (var ci = 0; ci < countEls.length; ci++) { counterObs.observe(countEls[ci]); }
 }
 
-// ── Contact Form Mockup ────────────────────────────────────────────
+// ── Dynamic contact form pitch text ──────────────────────────────────
+var typeSelect = document.querySelector('#cf-type');
+var contactPitch = document.querySelector('#contact-pitch');
+var messagePlaceholder = document.querySelector('#cf-message');
+
+var pitchText = {
+  'engineering-team': 'Early access to the Paniolo CLI — harness builder, intelligence layer scaffolding, and white-glove onboarding for your codebase. Tell us about your current AI coding setup and the biggest gap between what your agents produce and what your standards require.',
+  'vc': 'We are raising a pre-seed round. Paniolo is building the infrastructure layer for enterprise AI engineering teams — the picks-and-shovels play for the AI coding agent wave. Share your fund details and we will send the pitch deck and data room access.',
+  'developer': 'Individual developers get CLI early access to build and evolve their own project intelligence layer. Tell us what you are building and what AI tools you currently use.',
+  'enterprise': 'Enterprise teams get dedicated onboarding, custom harness templates, and a structured rollout plan. Tell us about your engineering org size and current AI tooling.',
+  'other': 'Tell us about yourself and what brought you to Paniolo. We will find the right way to work together.'
+};
+
+var placeholderText = {
+  'engineering-team': 'Describe your stack and where AI output falls short of your standards…',
+  'vc': 'Share your fund name and investment focus…',
+  'developer': 'Tell us what you are building and which AI coding tools you use…',
+  'enterprise': 'Describe your engineering org size and current AI tooling…',
+  'other': 'Tell us about yourself and what brought you here…'
+};
+
+if (typeSelect && contactPitch) {
+  typeSelect.addEventListener('change', function() {
+    var val = typeSelect.value;
+    if (pitchText[val]) {
+      contactPitch.style.opacity = '0';
+      setTimeout(function() {
+        contactPitch.textContent = pitchText[val];
+        contactPitch.style.opacity = '1';
+      }, 200);
+    }
+    if (messagePlaceholder && placeholderText[val]) {
+      messagePlaceholder.setAttribute('placeholder', placeholderText[val]);
+    }
+  });
+}
+
+// ── Contact form submit ───────────────────────────────────────────────
 var form = document.querySelector('#contact-form');
 var formSuccess = document.querySelector('#form-success');
 if (form) {
@@ -132,36 +162,19 @@ if (form) {
   });
 }
 
-// ── ROBUST ANCHOR SCROLL ───────────────────────────────────────────
+// ── Anchor scroll ─────────────────────────────────────────────────────
 var anchors = document.querySelectorAll('a[href^="#"]');
-for (var i = 0; i < anchors.length; i++) {
-  anchors[i].addEventListener('click', function(e) {
+for (var ai = 0; ai < anchors.length; ai++) {
+  anchors[ai].addEventListener('click', function(e) {
     var href = this.getAttribute('href');
-    if (!href || href === '#' || href.length < 2) return;
-
-    // Use try/catch because querySelector fails on IDs starting with numbers
-    try {
-      var target = document.querySelector(href);
-      if (target) {
-        e.preventDefault();
-        
-        var offset = getNavOffset() + 20;
-        var elementPosition = target.getBoundingClientRect().top;
-        var offsetPosition = elementPosition + window.pageYOffset - offset;
-
-        // Check if browser supports smooth scroll object
-        if ('scrollBehavior' in document.documentElement.style) {
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
-        } else {
-          // Legacy fallback
-          window.scrollTo(0, offsetPosition);
-        }
-      }
-    } catch (err) {
-      console.error("Link target not found or invalid ID selector:", href);
+    if (!href || href === '#') return;
+    var target = document.querySelector(href);
+    if (target) {
+      e.preventDefault();
+      var navEl = document.querySelector('body > nav');
+      var offset = (navEl ? navEl.offsetHeight : 64) + 16;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
     }
   });
 }
