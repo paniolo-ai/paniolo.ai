@@ -2,7 +2,7 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body{background:#F5F0E8;color:#1C1C1E;font-family:'DM Sans',system-ui,sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;width:100%;opacity:0;transition:opacity .4s ease}
+body{background:#F5F0E8;color:#1C1C1E;font-family:'DM Sans',system-ui,sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;width:100%;opacity:0;transition:opacity .15s ease}
 body.loaded{opacity:1}
 
 :root{
@@ -24,11 +24,11 @@ body.loaded{opacity:1}
 p{max-width:72ch}
 
 /* ── NAV — only targets main nav, never footer nav ── */
-body > nav{position:fixed;top:0;left:0;right:0;height:var(--nav-height);z-index:1000;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
-body > nav.scrolled{background:rgba(245,240,232,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom-color:var(--cream-border)}
+body > nav{position:fixed;top:0;left:0;right:0;height:var(--nav-height);z-index:1000;transition:background .2s,border-color .2s;border-bottom:1px solid var(--cream-border);background:rgba(245,240,232,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+body > nav.scrolled{background:rgba(245,240,232,.98)}
 
 /* About page — nav always visible since hero is dark */
-body.about-page > nav{background:rgba(28,28,30,.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom-color:rgba(255,255,255,.08)}
+body.about-page > nav{background:rgba(28,28,30,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.1)}
 body.about-page > nav.scrolled{background:rgba(245,240,232,.96);border-bottom-color:var(--cream-border)}
 body.about-page > nav.scrolled .nav-logo-word{color:var(--charcoal)}
 body.about-page > nav.scrolled .nav-links a{color:var(--charcoal-mid)}
