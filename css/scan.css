@@ -1,0 +1,79 @@
+/* Scan product pages — shared additions on top of style.css (URL-only pages) */
+
+/* ── SCAN SUBNAV ── */
+.scan-subnav{background:var(--cream-deep);border-bottom:1px solid var(--cream-border);margin-top:var(--nav-height)}
+.scan-subnav-inner{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;padding:.65rem 0}
+.scan-subnav-label{font-family:var(--font-mono);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.scan-subnav a{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--charcoal-mid);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.scan-subnav a:hover{color:var(--charcoal)}
+.scan-subnav a[aria-current="page"]{color:var(--accent);border-bottom:1px solid var(--accent)}
+
+/* Scan hero sits below the subnav, so it doesn't need full nav offset */
+.scan-hero{padding-top:3.5rem}
+.scan-hero.hero{min-height:auto;padding-bottom:1rem}
+
+/* ── CODE ── */
+.scan-code{background:var(--charcoal);color:var(--cream);font-family:var(--font-mono);font-size:.78rem;line-height:1.7;padding:1.25rem 1.5rem;border-radius:var(--radius);overflow-x:auto;margin:1rem 0;max-width:100%}
+.scan-code code{font-family:inherit}
+.scan-code .c{color:rgba(245,240,232,.45)}
+.scan-code .k{color:var(--accent-light)}
+code.scan-inline{font-family:var(--font-mono);font-size:.82em;background:var(--cream-deep);border:1px solid var(--cream-border);border-radius:var(--radius);padding:.08em .35em;color:var(--charcoal)}
+
+/* ── TABLES ── */
+.scan-table-wrap{overflow-x:auto;margin:1.25rem 0}
+.scan-table{width:100%;border-collapse:collapse;font-size:.82rem;font-weight:300;background:var(--white)}
+.scan-table th{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);text-align:left;padding:.7rem .9rem;border:1px solid var(--cream-border);background:var(--cream-deep)}
+.scan-table td{padding:.7rem .9rem;border:1px solid var(--cream-border);color:var(--charcoal-mid);vertical-align:top;line-height:1.6}
+.scan-table td strong{color:var(--charcoal);font-weight:500}
+
+/* ── SECTION RHYTHM ── */
+.scan-section{padding:3.5rem 0;border-top:1px solid var(--cream-border)}
+.scan-section-alt{background:var(--white)}
+.scan-section h2{margin-bottom:1rem}
+.scan-section h3{font-family:var(--font-display);font-size:1.35rem;font-weight:400;color:var(--charcoal);margin:2rem 0 .75rem;line-height:1.15}
+.scan-prose p{font-size:.92rem;font-weight:300;color:var(--charcoal-mid);line-height:1.85;margin-bottom:1rem}
+.scan-prose ul,.scan-prose ol{margin:0 0 1rem 1.25rem;font-size:.9rem;font-weight:300;color:var(--charcoal-mid);line-height:1.8}
+.scan-prose li{margin-bottom:.35rem}
+.scan-prose a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-pale)}
+.scan-prose a:hover{border-color:var(--accent)}
+
+/* ── CITE LINE ── */
+.scan-cite{font-family:var(--font-mono);font-size:.66rem;color:var(--charcoal-light);letter-spacing:.04em;display:block;margin-top:.5rem;line-height:1.6}
+.scan-cite a{color:var(--accent);text-decoration:none}
+.scan-cite a:hover{text-decoration:underline}
+
+/* ── FAQ ACCORDION ── */
+.scan-faq{border:1px solid var(--cream-border);border-bottom:none;background:var(--white)}
+.scan-faq details{border-bottom:1px solid var(--cream-border)}
+.scan-faq summary{cursor:pointer;padding:1.1rem 1.25rem;font-family:var(--font-display);font-size:1.05rem;font-weight:400;color:var(--charcoal);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:44px}
+.scan-faq summary::-webkit-details-marker{display:none}
+.scan-faq summary::after{content:'+';font-family:var(--font-mono);color:var(--accent);font-size:1rem;flex-shrink:0}
+.scan-faq details[open] summary::after{content:'−'}
+.scan-faq .scan-faq-body{padding:0 1.25rem 1.25rem;font-size:.88rem;font-weight:300;color:var(--charcoal-mid);line-height:1.8}
+
+/* ── GOODWILL BLOCK ── */
+.scan-goodwill{background:var(--accent-pale);border:1px solid var(--accent-light);border-radius:var(--radius);padding:1.5rem 1.75rem;margin:2rem 0}
+.scan-goodwill-title{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem}
+.scan-goodwill p{font-size:.88rem;font-weight:300;color:var(--charcoal-mid);line-height:1.8;max-width:none;margin:0}
+
+/* ── DECISION TREE ── */
+.scan-tree{font-family:var(--font-mono);font-size:.74rem;line-height:1.9;color:var(--charcoal-mid);background:var(--white);border:1px solid var(--cream-border);border-radius:var(--radius);padding:1.25rem 1.5rem;overflow-x:auto;white-space:pre}
+
+/* ── PERSONA / CTA CARDS ── */
+.scan-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-top:2rem}
+.scan-card{background:var(--white);border:1px solid var(--cream-border);border-radius:var(--radius);padding:1.5rem;display:flex;flex-direction:column;gap:.6rem}
+.scan-card-role{font-family:var(--font-mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.scan-card h3{font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--charcoal);margin:0;line-height:1.15}
+.scan-card p{font-size:.84rem;font-weight:300;color:var(--charcoal-mid);line-height:1.7;flex:1;max-width:none}
+.scan-card .scan-card-cta{font-family:var(--font-mono);font-size:.66rem;color:var(--charcoal);word-break:break-all}
+
+/* ── SEVERITY DOTS ── */
+.sev{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:.15em .5em;border-radius:var(--radius);white-space:nowrap}
+.sev-error{background:#3a1414;color:#e2a7a7}
+.sev-warn{background:#3a3014;color:#e2cda7}
+.sev-info{background:var(--cream-deep);color:var(--charcoal-light);border:1px solid var(--cream-border)}
+
+@media(max-width:768px){
+  .scan-subnav-inner{gap:1rem}
+  .scan-code{font-size:.7rem;padding:1rem}
+}

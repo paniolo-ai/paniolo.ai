@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="How @paniolo/scan calibrates its scores — published threshold derivations, weak/normal/mature fixtures, and a consistency gate on every LLM-judged finding." />
+  <title>Scan Calibration — @paniolo/scan — Paniolo</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/scan.css" />
+</head>
+<body>
+
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="../index.html" class="nav-logo" aria-label="Paniolo home">
+        <span class="nav-logo-word">Paniolo</span>
+        <span class="nav-logo-tagline">Harness Engineering</span>
+      </a>
+      <ul class="nav-links" id="nav-menu" role="list">
+        <li><a href="../index.html#principles">Principles</a></li>
+        <li><a href="../index.html#research">Research</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="../index.html#contact" class="nav-cta">Get Early Access</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="scan-subnav" aria-label="Scan pages">
+    <div class="container scan-subnav-inner">
+      <span class="scan-subnav-label">@paniolo/scan</span>
+      <a href="scan.html">Overview</a>
+      <a href="scan-docs.html">Docs</a>
+      <a href="scan-research.html">Research</a>
+      <a href="scan-calibration.html" aria-current="page">Calibration</a>
+      <a href="scan-compare.html">Compare</a>
+    </div>
+  </div>
+
+  <main>
+
+    <section class="hero scan-hero" aria-labelledby="cal-headline">
+      <div class="container">
+        <div class="hero-eyebrow">
+          <div class="hero-eyebrow-line" aria-hidden="true"></div>
+          <span class="label">Methodology</span>
+        </div>
+        <h1 class="hero-headline" id="cal-headline" style="font-size:clamp(2.2rem,4vw,3.5rem);">Who decided<br><em>75 lines?</em></h1>
+        <p class="hero-subhead" style="max-width:62ch;">Fair question — every scanner threshold deserves it. This page is the answer: where each default comes from, what locks it in place, and what we still consider open. If you'd challenge a threshold in an issue, you should be able to read its derivation here first.</p>
+      </div>
+    </section>
+
+    <!-- PRINCIPLES -->
+    <section class="scan-section scan-section-alt" aria-labelledby="prin-title">
+      <div class="container scan-prose">
+        <span class="label">Three Commitments</span>
+        <h2 class="section-title" id="prin-title" style="font-size:2rem;">Reference values,<br><em>not pass/fail gates</em></h2>
+        <ul>
+          <li><strong>Scores degrade smoothly.</strong> Six scoring curves (binary, asymptotic decay, ratio, Goldilocks range, tiered, averaged sub-scores) mean 2,500 words against a 2,000-word reference scores 0.8 — measured deviation, not a verdict.</li>
+          <li><strong>Not run is never zero.</strong> A dimension that didn't run reports <code class="scan-inline">null</code> and is excluded from the total; <code class="scan-inline">score_scope</code> records what the score covers. Opting into extended analysis can never make an honest repo look worse than one that skipped it.</li>
+          <li><strong>One failure counts once.</strong> Rule-compliance dimensions score from pass ratio only — no stacked penalties for the same finding. The two analysis-based dimensions (sharing, harness wiring) apply their own penalties because their base score isn't findings-derived.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- DERIVATIONS -->
+    <section class="scan-section" aria-labelledby="derive-title">
+      <div class="container scan-prose">
+        <span class="label">Threshold Derivations</span>
+        <h2 class="section-title" id="derive-title" style="font-size:2rem;">Every default,<br><em>sourced</em></h2>
+        <p>Values live in one place in the codebase (a single thresholds file plus shared constants) so no two rules can disagree about a number. The defaults and where they come from:</p>
+        <div class="scan-table-wrap">
+          <table class="scan-table">
+            <thead><tr><th scope="col">Threshold</th><th scope="col">Default</th><th scope="col">Derivation</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code class="scan-inline">adapter_max_lines</code></td>
+                <td>75</td>
+                <td>Thin-adapter principle: a per-tool file (<code class="scan-inline">CLAUDE.md</code>, <code class="scan-inline">GEMINI.md</code>) should route to shared guidance, not inline it. Calibrated so mature reference adapters pass and inlined ones fail.</td>
+              </tr>
+              <tr>
+                <td><code class="scan-inline">skill_max_lines</code></td>
+                <td>300</td>
+                <td>A skill is a short, loadable checklist; beyond ~300 lines it's a document and should deep-link instead. Calibrated against the reference repo's skills.</td>
+              </tr>
+              <tr>
+                <td><code class="scan-inline">sharing_target_percent</code></td>
+                <td>65</td>
+                <td>Share of guidance lines that should live in shared layers vs. per-harness adapters; reference-calibrated against mature multi-harness repos.</td>
+              </tr>
+              <tr>
+                <td><code class="scan-inline">MAX_RECOMMENDED_ALWAYS_LOADED_LINES</code></td>
+                <td>250</td>
+                <td>The Codified Context study validated a ~660-line always-loaded constitution over 283 sessions on a 108,256-line codebase — an empirical ceiling for a <em>large</em> repo. 250 is a deliberately tighter advisory default for the typical, smaller repo.</td>
+              </tr>
+              <tr>
+                <td><code class="scan-inline">MAX_RECOMMENDED_ALWAYS_LOADED_FILE_LINES</code></td>
+                <td>150</td>
+                <td>Per-file slice of the always-loaded budget — keeps any single always-on file scannable. Advisory (<code class="scan-inline">info</code>).</td>
+              </tr>
+              <tr>
+                <td>Grade bands</td>
+                <td>85 / 70 / 50</td>
+                <td>Excellent / good / fair cutoffs, validated against the reference repo and the fixture suite below.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The same study reports context infrastructure at <strong>24.2%</strong> of that 108K-line codebase — a published reference point for judging whether a guidance footprint is proportionate, used as context, not as a gate.</p>
+        <span class="scan-cite">~660 lines / 283 sessions / 24.2% — Codified Context, arXiv 2026, <a href="https://arxiv.org/abs/2602.20478" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2602.20478</a></span>
+      </div>
+    </section>
+
+    <!-- FIXTURES -->
+    <section class="scan-section scan-section-alt" aria-labelledby="fix-title">
+      <div class="container scan-prose">
+        <span class="label">What Locks It In</span>
+        <h2 class="section-title" id="fix-title" style="font-size:2rem;">Fixtures fail the build<br><em>before a threshold drifts</em></h2>
+        <p>Single-repo calibration risks overfitting to one mature repo's quirks. So the calibration suite holds three synthetic repo shapes at distinct maturity tiers, scanned in CI:</p>
+        <div class="scan-table-wrap">
+          <table class="scan-table">
+            <thead><tr><th scope="col">Fixture</th><th scope="col">Shape</th><th scope="col">Expectation</th></tr></thead>
+            <tbody>
+              <tr><td><strong>weak</strong></td><td>One bloated, inlined <code class="scan-inline">CLAUDE.md</code>; no shared entry, rules doc, skills, or agents</td><td>Low score; surfaces actionable findings</td></tr>
+              <tr><td><strong>normal</strong></td><td>Shared <code class="scan-inline">AGENTS.md</code> + thin <code class="scan-inline">CLAUDE.md</code> + one skill</td><td>Middle band</td></tr>
+              <tr><td><strong>mature</strong></td><td>Thin adapters routing to <code class="scan-inline">AGENTS.md</code> + canonical rules, a skills index, routed skill and agent</td><td>Excellent band (≥ 85)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The test asserts the <strong>band ordering</strong> — weak &lt; normal &lt; mature, with mature clearing the excellent threshold — not brittle exact scores. A threshold change that lets a weak shape score like a mature one breaks the band and fails CI. The fixtures complement (not replace) reference-repo calibration: fixtures catch threshold drift across shapes; the reference repo catches regressions in a known-good one. And the scanner holds itself to its own standard — paniolo-scan must score excellent on its own repo after any scoring change.</p>
+      </div>
+    </section>
+
+    <!-- LLM CONSISTENCY -->
+    <section class="scan-section" aria-labelledby="llm-title">
+      <div class="container scan-prose">
+        <span class="label">The LLM Tier</span>
+        <h2 class="section-title" id="llm-title" style="font-size:2rem;">Calibrating a judge<br><em>that changes its mind</em></h2>
+        <p>The deterministic core is single-pass and consistent by construction. The opt-in ai-scan tier is LLM-judged, and the reliability literature is blunt about what that means: the same task can succeed or fail run-to-run, and newer models don't automatically get more consistent. So ai-scan treats its own judge as a component to be reliability-engineered:</p>
+        <ul>
+          <li>Findings are accepted only after a <strong>K-run majority vote</strong> at ingest; the rest are labeled low-confidence rather than hidden.</li>
+          <li>Malformed judge output <strong>hard-fails</strong> — it is never silently scored.</li>
+          <li>The gate re-runs whenever the judge model or prompts change, because consistency is a property of the pair, not the model.</li>
+        </ul>
+        <span class="scan-cite">Consistency framing — Reliability science, arXiv 2026, <a href="https://arxiv.org/abs/2602.16666" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2602.16666</a></span>
+      </div>
+    </section>
+
+    <!-- OPEN LIMITS -->
+    <section class="scan-section scan-section-alt" aria-labelledby="open-title">
+      <div class="container scan-prose">
+        <span class="label">Still Open</span>
+        <h2 class="section-title" id="open-title" style="font-size:2rem;">What we don't<br><em>claim yet</em></h2>
+        <ul>
+          <li><strong>No per-rule precision/recall corpus.</strong> We can tell you why a rule exists and what it checks; we cannot yet quote a measured detection rate. A labeled multi-repo corpus with per-rule precision/recall in CI is the planned extension — prior art exists in this niche and we intend to match it.</li>
+          <li><strong>Security-posture severities are conservative pending calibration.</strong> The six posture rules ship at info/warn until a real-repo severity pass earns stronger levels.</li>
+          <li><strong>Failure-mode tags are editorial.</strong> They use a validated taxonomy's vocabulary, mapped rule-by-rule in one reviewable file — they have not been re-measured on live paniolo-scan runs.</li>
+        </ul>
+        <p>Publishing the limits is part of the methodology. A threshold you can interrogate is worth more than a score you're asked to trust.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="about-cta">
+      <div class="container about-cta-inner">
+        <div>
+          <p class="about-cta-headline">Interrogate it on your own repo.</p>
+          <p class="about-cta-sub">npx @paniolo/scan — every finding carries its reasoning</p>
+        </div>
+        <a href="scan-docs.html" class="btn-primary">
+          Quick Start
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">Paniolo</div>
+          <div class="footer-tagline">Precision Infrastructure for AI Engineering</div>
+          <div class="footer-location">New York · Honolulu, Hawaiʻi</div>
+        </div>
+        <nav aria-label="Footer navigation">
+          <ul class="footer-links" role="list">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="scan.html">Scan Overview</a></li>
+            <li><a href="scan-research.html">Scan Research</a></li>
+            <li><a href="https://bkinsey808.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a></li>
+            <li><a href="../index.html#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-copy">© 2026 Paniolo · New York &amp; Honolulu, Hawaiʻi</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

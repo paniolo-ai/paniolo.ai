@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="@paniolo/scan vs AgentLint, agnix, and AgentLinter — a factual comparison of the AI harness linting tools, including what each does better." />
+  <title>Scan Compare — @paniolo/scan — Paniolo</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/scan.css" />
+</head>
+<body>
+
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="../index.html" class="nav-logo" aria-label="Paniolo home">
+        <span class="nav-logo-word">Paniolo</span>
+        <span class="nav-logo-tagline">Harness Engineering</span>
+      </a>
+      <ul class="nav-links" id="nav-menu" role="list">
+        <li><a href="../index.html#principles">Principles</a></li>
+        <li><a href="../index.html#research">Research</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="../index.html#contact" class="nav-cta">Get Early Access</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="scan-subnav" aria-label="Scan pages">
+    <div class="container scan-subnav-inner">
+      <span class="scan-subnav-label">@paniolo/scan</span>
+      <a href="scan.html">Overview</a>
+      <a href="scan-docs.html">Docs</a>
+      <a href="scan-research.html">Research</a>
+      <a href="scan-calibration.html">Calibration</a>
+      <a href="scan-compare.html" aria-current="page">Compare</a>
+    </div>
+  </div>
+
+  <main>
+
+    <section class="hero scan-hero" aria-labelledby="cmp-headline">
+      <div class="container">
+        <div class="hero-eyebrow">
+          <div class="hero-eyebrow-line" aria-hidden="true"></div>
+          <span class="label">The Landscape, Honestly</span>
+        </div>
+        <h1 class="hero-headline" id="cmp-headline" style="font-size:clamp(2.2rem,4vw,3.5rem);">Four tools lint<br><em>AI harnesses.</em><br>Here's the truth.</h1>
+        <p class="hero-subhead" style="max-width:64ch;">By mid-2026 the "lint your AI coding harness" niche went from empty to crowded — and the other three tools are good. Two are MIT-licensed, and paniolo-scan has openly ported ideas from them with attribution. This page is the comparison we'd want to read if we were you.</p>
+      </div>
+    </section>
+
+    <!-- LANDSCAPE TABLE -->
+    <section class="scan-section scan-section-alt" aria-labelledby="table-title">
+      <div class="container scan-prose">
+        <span class="label">At a Glance</span>
+        <h2 class="section-title" id="table-title" style="font-size:2rem;">The four scanners</h2>
+        <div class="scan-table-wrap">
+          <table class="scan-table">
+            <thead>
+              <tr><th scope="col">Tool</th><th scope="col">Scope</th><th scope="col">Rules</th><th scope="col">Autofix</th><th scope="col">Distinctive strength</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>AgentLint</strong></td>
+                <td>Whole harness (files, CI, hooks)</td>
+                <td>~51 core checks</td>
+                <td>Guided / assisted</td>
+                <td>Every check cites a primary source; accuracy CI against a published 4,533-repo labeled corpus</td>
+              </tr>
+              <tr>
+                <td><strong>AgentLinter</strong></td>
+                <td>Agent-workspace config, 11 weighted dimensions (0–100)</td>
+                <td>102 (CLI) / 129 (web)</td>
+                <td>Export to Cursor/Copilot/Gemini</td>
+                <td>Position-risk, relevance-trap, and freshness checks; multi-agent orchestration lint</td>
+              </tr>
+              <tr>
+                <td><strong>agnix</strong></td>
+                <td>Config validity — 40 categories, 11 tools</td>
+                <td>422</td>
+                <td>127 rules, confidence-tiered</td>
+                <td>One Rust core powering CLI, LSP, MCP server, and a WASM playground; per-rule eval harness; written threat model</td>
+              </tr>
+              <tr>
+                <td><strong>paniolo-scan</strong></td>
+                <td>Full-spectrum intelligence layer (guidance + enforcement + validation + LLM boundary)</td>
+                <td>50+ deterministic rules + 6 analysis modules</td>
+                <td>None — by design</td>
+                <td>Cross-harness sharing analysis and always-loaded context budget; diagnostic-only core; opt-in session and AI tiers that never touch the core score</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Sources: each tool's public README, docs, and published rule counts as of mid-2026. Corrections welcome — <a href="../index.html#contact">tell us</a> and we'll fix this page.</p>
+      </div>
+    </section>
+
+    <!-- WHAT THEY DO WELL -->
+    <section class="scan-section" aria-labelledby="credit-title">
+      <div class="container scan-prose">
+        <span class="label">Credit First</span>
+        <h2 class="section-title" id="credit-title" style="font-size:2rem;">What each peer<br><em>does better than us</em></h2>
+        <ul>
+          <li><strong>AgentLint</strong> publishes a labeled corpus of 4,533 real repos and fails its own CI if accuracy can't be verified against it. paniolo-scan does not yet have a per-rule precision/recall corpus — it's on our roadmap precisely because AgentLint proved the discipline matters.</li>
+          <li><strong>agnix</strong> ships four distribution surfaces from one Rust core (CLI, editor LSP, MCP server, browser playground), maintains a machine-readable evidence schema for all 422 rules with CI parity tests, and has a written threat model. paniolo-scan ships a CLI.</li>
+          <li><strong>AgentLinter</strong> checks <em>where</em> instructions live — critical keywords buried mid-file, context-specific rules a relevance filter may skip, staleness against the live filesystem — angles paniolo-scan doesn't cover today.</li>
+        </ul>
+        <p>AgentLint and agnix are MIT-licensed; where paniolo-scan ports an idea (the scoring-curve design, several security-hygiene detection patterns), the source is credited in the rule and the <a href="scan-research.html">research page</a>.</p>
+      </div>
+    </section>
+
+    <!-- WHERE PANIOLO DIFFERS -->
+    <section class="scan-section scan-section-alt" aria-labelledby="diff-title">
+      <div class="container scan-prose">
+        <span class="label">The Difference</span>
+        <h2 class="section-title" id="diff-title" style="font-size:2rem;">What only the<br><em>meta-harness lens</em> sees</h2>
+        <p>The peers focus hardest on agent-file quality — is this prompt file well-formed, well-placed, well-sized. paniolo-scan starts one layer up: AI infrastructure quality is a property of the <em>whole repo across tools</em>, not of any single file. That lens produces measurements the per-file approach doesn't take:</p>
+        <ul>
+          <li><strong>Cross-harness sharing analysis.</strong> How much guidance lives once vs. duplicated across Copilot, Cursor, Codex, Antigravity, Claude Code, and Gemini — in files, lines, and percent. Based on the public rule lists and docs of the three peers as of mid-2026, none reports this measurement at scan time.</li>
+          <li><strong>Always-loaded context budget.</strong> Estimated eager-loaded lines and tokens per harness, against research-anchored ceilings — distinct from total guidance footprint.</li>
+          <li><strong>Full-spectrum scope.</strong> Enforcement and validation surfaces (typecheck gates, lint gates, test discoverability, CI wiring, correction-loop docs) score as harness quality — because a lint rule that prevents an agent mistake is harness infrastructure, whether or not it lives in a prompt file.</li>
+          <li><strong>The LLM boundary in application code.</strong> Schema validation, model pinning, and tool contract tests where model output meets typed code — motivated by the fault-taxonomy finding that ~40% of sampled agentic-AI faults concentrate at that seam (<a href="scan-research.html">details and caveats</a>).</li>
+          <li><strong>Session evidence, opt-in.</strong> Session Analysis mines your own local logs for repeated instructions and ignored rules — LLM-free, redacted, never scored. AgentLint has a session module in the same spirit; paniolo-scan's is deterministic end-to-end and quarantined from the comparable score.</li>
+        </ul>
+        <p><strong>And the deliberate non-feature:</strong> no autofix. The other three write files (guided fixes, exports, confidence-tiered rewrites). paniolo-scan's core never does — diagnosis and remediation are separate layers, with file writes living only in your own agent, on your instruction. That's the property that makes the scan safe to run on any repo you don't own.</p>
+      </div>
+    </section>
+
+    <!-- WHICH TOOL -->
+    <section class="scan-section" aria-labelledby="pick-title">
+      <div class="container scan-prose">
+        <span class="label">Choosing</span>
+        <h2 class="section-title" id="pick-title" style="font-size:2rem;">Which should<br><em>you run?</em></h2>
+        <div class="scan-table-wrap">
+          <table class="scan-table">
+            <thead><tr><th scope="col">You primarily want…</th><th scope="col">Reach for</th></tr></thead>
+            <tbody>
+              <tr><td>Maximum config-validity coverage across 11 tools, in-editor diagnostics, or a linter your agent can call over MCP</td><td><strong>agnix</strong></td></tr>
+              <tr><td>Claude Code–focused checks with primary-source citations and corpus-verified accuracy</td><td><strong>AgentLint</strong></td></tr>
+              <tr><td>A weighted workspace score with placement/freshness heuristics and multi-framework export</td><td><strong>AgentLinter</strong></td></tr>
+              <tr><td>A comparable cross-harness score, duplication and context-budget evidence, security posture, and a diagnostic-only guarantee</td><td><strong>paniolo-scan</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>They compose: nothing stops you running agnix for config validity and paniolo-scan for the meta-harness score. Several of our own rules exist because their authors did good work first.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="about-cta">
+      <div class="container about-cta-inner">
+        <div>
+          <p class="about-cta-headline">Run the one that never writes.</p>
+          <p class="about-cta-sub">npx @paniolo/scan — compare the report yourself</p>
+        </div>
+        <a href="scan-docs.html" class="btn-primary">
+          Quick Start
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">Paniolo</div>
+          <div class="footer-tagline">Precision Infrastructure for AI Engineering</div>
+          <div class="footer-location">New York · Honolulu, Hawaiʻi</div>
+        </div>
+        <nav aria-label="Footer navigation">
+          <ul class="footer-links" role="list">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="scan.html">Scan Overview</a></li>
+            <li><a href="scan-docs.html">Scan Docs</a></li>
+            <li><a href="https://bkinsey808.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a></li>
+            <li><a href="../index.html#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-copy">© 2026 Paniolo · New York &amp; Honolulu, Hawaiʻi</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

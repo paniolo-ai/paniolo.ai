@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="@paniolo/scan — the AI Technical Debt Scanner. A free, diagnostic-only CLI that scores your repo's AI harness across six coding agents." />
+  <title>Scan — AI Technical Debt Scanner — Paniolo</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/scan.css" />
+</head>
+<body>
+
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="../index.html" class="nav-logo" aria-label="Paniolo home">
+        <span class="nav-logo-word">Paniolo</span>
+        <span class="nav-logo-tagline">Harness Engineering</span>
+      </a>
+      <ul class="nav-links" id="nav-menu" role="list">
+        <li><a href="../index.html#principles">Principles</a></li>
+        <li><a href="../index.html#research">Research</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="../index.html#contact" class="nav-cta">Get Early Access</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="scan-subnav" aria-label="Scan pages">
+    <div class="container scan-subnav-inner">
+      <span class="scan-subnav-label">@paniolo/scan</span>
+      <a href="scan.html" aria-current="page">Overview</a>
+      <a href="scan-docs.html">Docs</a>
+      <a href="scan-research.html">Research</a>
+      <a href="scan-calibration.html">Calibration</a>
+      <a href="scan-compare.html">Compare</a>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero scan-hero" aria-labelledby="scan-headline">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="hero-eyebrow">
+              <div class="hero-eyebrow-line" aria-hidden="true"></div>
+              <span class="label">Open Source — Diagnostic CLI</span>
+            </div>
+            <h1 class="hero-headline" id="scan-headline">
+              The AI<br><em>technical debt</em><br>scanner.
+            </h1>
+            <p class="hero-subhead">
+              Every repeated agent mistake traces back to a gap in your repo's guidance,
+              enforcement, or validation surfaces. <code class="scan-inline">@paniolo/scan</code>
+              finds those gaps — across Copilot, Cursor, Codex, Antigravity, Claude Code, and
+              Gemini — and scores them. It reads your repo; it never writes a byte.
+            </p>
+            <div class="scan-code"><code><span class="c"># From any repo root — no install, no config, no writes</span>
+npx @paniolo/scan</code></div>
+            <div class="hero-actions">
+              <a href="scan-docs.html" class="btn-primary">
+                Read the Docs
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <a href="https://github.com/paniolo-ai/paniolo-scan" target="_blank" rel="noopener noreferrer" class="btn-secondary">View on GitHub</a>
+            </div>
+          </div>
+
+          <div class="hero-panel" aria-label="Research statistics behind the scanner">
+            <div class="hero-panel-card">
+              <span class="hero-stat-number">28.0%</span>
+              <span class="hero-stat-label">Of agentic-AI faults are schema mismatches at the LLM boundary</span>
+              <span class="hero-stat-source">Fault taxonomy, arXiv:2603.06847</span>
+            </div>
+            <div class="hero-panel-card">
+              <span class="hero-stat-number">74.6% → 0%</span>
+              <span class="hero-stat-label">Attacker success when a deterministic policy gate replaces a permissive one</span>
+              <span class="hero-stat-source">Open Agent Passport CTF, arXiv:2603.20953</span>
+            </div>
+            <div class="hero-panel-card">
+              <span class="hero-stat-number">53–82 pp</span>
+              <span class="hero-stat-label">Capability drop on under-specified tasks without an escalation protocol</span>
+              <span class="hero-stat-source">HiL-Bench, arXiv:2604.09408</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THREE-REPO DIAGRAM -->
+    <div class="diagram-section" aria-label="Three repos, one story">
+      <div class="container">
+        <div class="diagram-label">
+          <span class="label">Three Repos, One Story</span>
+        </div>
+        <div class="diagram-flow">
+          <div class="diagram-node diagram-node-accent">
+            <div class="diagram-node-icon">◈</div>
+            <div class="diagram-node-title">Diagnose</div>
+            <div class="diagram-node-desc">paniolo-ai/paniolo-scan — the @paniolo/scan CLI. Scores and findings, no file writes.</div>
+          </div>
+          <div class="diagram-arrow" aria-hidden="true">→</div>
+          <div class="diagram-node">
+            <div class="diagram-node-icon">◈</div>
+            <div class="diagram-node-title">Remediate (optional)</div>
+            <div class="diagram-node-desc">paniolo-ai/scan — thin agent adapters (skill, slash command, workflow) that run the scan and fix findings on request.</div>
+          </div>
+          <div class="diagram-arrow" aria-hidden="true">→</div>
+          <div class="diagram-node">
+            <div class="diagram-node-icon">◈</div>
+            <div class="diagram-node-title">Build &amp; Evolve</div>
+            <div class="diagram-node-desc">paniolo.ai — professional meta-harness engineering and harness evolution.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHAT IT MEASURES -->
+    <section class="scan-section scan-section-alt" aria-labelledby="measures-title">
+      <div class="container">
+        <header class="section-header">
+          <span class="label">What It Measures</span>
+          <h2 class="section-title" id="measures-title">Six dimensions of<br><em>harness quality</em></h2>
+          <p class="section-subtext">Not prompt-file style. The scan evaluates whether your whole repo — across every tool your team uses — is engineered for coding agents: shared guidance, thin adapters, discoverable skills, enforcement gates, and guardrails.</p>
+        </header>
+        <div class="features-grid" role="list" style="grid-template-columns:repeat(3,1fr);">
+          <article class="feature-card" role="listitem">
+            <h3 class="feature-title">Layering</h3>
+            <p class="feature-desc">One shared source of truth (<code class="scan-inline">AGENTS.md</code>, canonical rules) wired into each tool through thin adapters — instead of six diverging instruction files.</p>
+          </article>
+          <article class="feature-card" role="listitem">
+            <h3 class="feature-title">Sharing</h3>
+            <p class="feature-desc">How much guidance lives once vs. duplicated per harness, in lines and percent. Duplicated guidance drifts, and drift wastes always-loaded context.</p>
+          </article>
+          <article class="feature-card" role="listitem">
+            <h3 class="feature-title">Discoverability</h3>
+            <p class="feature-desc">Can an agent actually find your skills, agents, and rules? Indexes, routing tables, and search scripts are scored, not assumed.</p>
+          </article>
+          <article class="feature-card" role="listitem">
+            <h3 class="feature-title">Harness wiring</h3>
+            <p class="feature-desc">Per-tool config surfaces — VS Code skill locations, Codex hooks, Claude settings — checked for presence and validity.</p>
+          </article>
+          <article class="feature-card" role="listitem">
+            <h3 class="feature-title">Maintainability</h3>
+            <p class="feature-desc">Guidance stays bounded, linked, indexed, and free of duplicate trees — so it keeps working as the repo grows.</p>
+          </article>
+          <article class="feature-card" role="listitem">
+            <h3 class="feature-title">Guardrails</h3>
+            <p class="feature-desc">Hooks, permissions, CI gates, and security hygiene: the deterministic enforcement that keeps an agent honest when prose fails.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH-GROUNDED FEATURES -->
+    <section class="scan-section" aria-labelledby="features-title">
+      <div class="container scan-prose">
+        <header class="section-header">
+          <span class="label">June 2026 Feature Set</span>
+          <h2 class="section-title" id="features-title">Research in.<br><em>Rules out.</em></h2>
+          <p class="section-subtext">Each feature below started as a finding in the published literature and shipped as a deterministic check or a fenced, consistency-gated AI module. The cadence is research → rule → release.</p>
+        </header>
+
+        <div class="scan-cards">
+          <div class="scan-card">
+            <span class="scan-card-role">Scoring</span>
+            <h3>Continuous scores, honest scopes</h3>
+            <p>Six scoring curves replace pass/fail gates: 2,500 words against a 2,000-word budget scores 0.8, not "FAIL." Dimensions that don't run report <code class="scan-inline">null</code> — never zero — and <code class="scan-inline">score_scope</code> records whether a score covers core dimensions or core plus extended, so scores stay comparable across repos.</p>
+          </div>
+          <div class="scan-card">
+            <span class="scan-card-role">Security hygiene</span>
+            <h3>Nine deterministic guardrail checks</h3>
+            <p>Blanket auto-approve permissions, hook scripts that call non-local hosts, <code class="scan-inline">pull_request_target</code> workflows, unpinned Actions, missing secret scanning, loop-prone Stop hooks, broken hook wiring, and unignored <code class="scan-inline">.env</code> files — the findings that matter most are the ones easiest to miss.</p>
+          </div>
+          <div class="scan-card">
+            <span class="scan-card-role">Failure modes</span>
+            <h3>Every finding predicts a failure class</h3>
+            <p>Findings carry a predicted runtime failure class — Memory, Reflection, Planning, Action, or System Operation — using vocabulary validated on real agent trajectories, plus an exposure view showing which classes your repo is most exposed to.</p>
+            <span class="scan-cite">Taxonomy — AgentErrorTaxonomy, <a href="https://arxiv.org/abs/2509.25370" target="_blank" rel="noopener noreferrer">arXiv:2509.25370</a></span>
+          </div>
+          <div class="scan-card">
+            <span class="scan-card-role">LLM boundary</span>
+            <h3>Scans the probabilistic/deterministic seam</h3>
+            <p>The top recorded root cause of agentic-AI faults — 28.0% of a 385-fault coded sample — is LLM/tool output feeding typed code without validation. Three rules check schema validation, model-interface pinning, and tool contract tests in your source, not just your prompt files.</p>
+            <span class="scan-cite">28.0% / 11.6% — Agentic-AI fault taxonomy, <a href="https://arxiv.org/abs/2603.06847" target="_blank" rel="noopener noreferrer">arXiv:2603.06847</a></span>
+          </div>
+          <div class="scan-card">
+            <span class="scan-card-role">Security posture</span>
+            <h3>Declared defenses, proportionate to capability</h3>
+            <p>Six conservative checks — escalation protocol, resource caps, tool allowlists, untrusted-input boundaries, memory-write provenance, high-impact-action confirmation — grounded in a USENIX Security 2026 survey's risk taxonomy. They verify the protocol is declared, not that an agent exercises judgment.</p>
+            <span class="scan-cite">Risk grid — Attack/defense survey, <a href="https://arxiv.org/abs/2603.11088" target="_blank" rel="noopener noreferrer">arXiv:2603.11088</a></span>
+          </div>
+          <div class="scan-card">
+            <span class="scan-card-role">ai-scan tier</span>
+            <h3>LLM findings you can audit</h3>
+            <p>Opt-in Deep Analysis emits bounded JSON tasks (contradictions, adapter drift, dead weight, vague rules, security review) for your agent's own session to answer — then a K-run majority vote keeps only findings stable across runs. The rest are labeled low-confidence, not hidden.</p>
+            <span class="scan-cite">Consistency framing — Reliability science, <a href="https://arxiv.org/abs/2602.16666" target="_blank" rel="noopener noreferrer">arXiv:2602.16666</a></span>
+          </div>
+          <div class="scan-card">
+            <span class="scan-card-role">Session analysis</span>
+            <h3>Your own friction, quoted back</h3>
+            <p>An opt-in, LLM-free pass over your local Claude Code transcripts finds the instructions you keep re-typing, committed rules the agent ignored, and friction hotspots — evidence of missing harness rules, in your own words. Local only, redacted by default, never in CI, never in the score.</p>
+          </div>
+          <div class="scan-card">
+            <span class="scan-card-role">Calibration</span>
+            <h3>Published thresholds, not vibes</h3>
+            <p>Every default has a documented derivation, anchored where possible to production-validated research numbers, and locked by weak/normal/mature calibration fixtures in CI. Reference values measure deviation; they are not pass/fail gates.</p>
+            <span class="scan-cite">Anchors — Codified Context, <a href="https://arxiv.org/abs/2602.20478" target="_blank" rel="noopener noreferrer">arXiv:2602.20478</a> · <a href="scan-calibration.html">How we calibrate</a></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REAL OUTPUT -->
+    <section class="scan-section scan-section-alt" aria-labelledby="output-title">
+      <div class="container scan-prose">
+        <header class="section-header">
+          <span class="label">Real Output</span>
+          <h2 class="section-title" id="output-title">From an actual scan,<br><em>not a mockup</em></h2>
+          <p class="section-subtext">Excerpt from a real run against a mature open-source repo (SongShare Effect). Six harnesses detected, score 90, with the extended dimensions honestly reported as not run.</p>
+        </header>
+        <div class="scan-code" aria-label="Sample JSON report excerpt"><code>{
+  "total_score": 90,
+  "score_scope": "core",
+  "harnesses": ["antigravity", "claude", "codex", "copilot", "cursor", "gemini"],
+  "metaHarness": {
+    "dimensions": {
+      "layering":        { "status": "run", "score": 100, "grade": "excellent" },
+      "sharing":         { "status": "run", "score": 100, "grade": "excellent" },
+      "discoverability": { "status": "run", "score": 80,  "grade": "good" },
+      "harnessWiring":   { "status": "run", "score": 100, "grade": "excellent" },
+      "maintainability": { "status": "run", "score": 71,  "grade": "good" },
+      "session": null,   <span class="c">// not run ≠ zero — extended tiers never drag the core score</span>
+      "deep": null
+    }
+  },
+  "failureModeExposure": {
+    "byDimension": [
+      { "dimension": "System Operation", "findingCount": 7, "warn": 4, "info": 3 },
+      { "dimension": "Reflection",       "findingCount": 6, "info": 6 }
+    ]
+  }
+}</code></div>
+        <p>And one finding, as the terminal prints it:</p>
+        <div class="scan-code"><code><span class="k">warn</span>  actions-sha-pinned
+  .github/workflows/commitlint.yml uses actions pinned to mutable refs: actions/checkout@v6
+  Prevents: System Operation-class agent failures
+  Hint: Pin each action to a full 40-character commit SHA to prevent tag-hijack supply-chain attacks.</code></div>
+      </div>
+    </section>
+
+    <!-- PERSONAS -->
+    <section class="scan-section" aria-labelledby="persona-title">
+      <div class="container">
+        <header class="section-header">
+          <span class="label">Where To Start</span>
+          <h2 class="section-title" id="persona-title">Pick your<br><em>first scan</em></h2>
+        </header>
+        <div class="scan-cards">
+          <div class="scan-card">
+            <span class="scan-card-role">Solo developer</span>
+            <h3>Mine your own friction</h3>
+            <p>You've typed the same correction into your agent a dozen times. Session Analysis finds it in your local logs and tells you which rule your CLAUDE.md is missing.</p>
+            <span class="scan-card-cta">npx @paniolo/scan --session-analysis</span>
+          </div>
+          <div class="scan-card">
+            <span class="scan-card-role">Team lead / platform</span>
+            <h3>Stop guidance drift in CI</h3>
+            <p>Cross-harness sharing analysis and context budgets show where six tools' instructions duplicated and diverged. JSON output and exit codes drop into any pipeline.</p>
+            <span class="scan-card-cta">npx @paniolo/scan --format json --fail-on error</span>
+          </div>
+          <div class="scan-card">
+            <span class="scan-card-role">Security / AppSec</span>
+            <h3>Audit the agent attack surface</h3>
+            <p>Hooks that call external hosts, blanket auto-approve, secret leaks, privilege-escalating workflows — deterministic checks grounded in the published risk taxonomies.</p>
+            <span class="scan-card-cta">npx @paniolo/scan --fail-on warn</span>
+          </div>
+          <div class="scan-card">
+            <span class="scan-card-role">Staff+ / architect</span>
+            <h3>Interrogate the methodology</h3>
+            <p>Every threshold has a published derivation; fixtures lock the bands in CI; the LLM tier is consistency-gated. Read how the scores are made before you trust them.</p>
+            <span class="scan-card-cta"><a href="scan-calibration.html" style="color:inherit">How we calibrate →</a></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GOODWILL + FAQ -->
+    <section class="scan-section scan-section-alt" aria-labelledby="faq-title">
+      <div class="container scan-prose">
+        <header class="section-header">
+          <span class="label">Honest Answers</span>
+          <h2 class="section-title" id="faq-title">Before you ask</h2>
+        </header>
+
+        <div class="scan-faq">
+          <details>
+            <summary>Does the scan modify my repo?</summary>
+            <div class="scan-faq-body">No. The CLI is 100% diagnostic: no init, no templates, no autofix, no file writes. Remediation is a separate, optional agent adapter that only acts in your working tree when you ask it to.</div>
+          </details>
+          <details>
+            <summary>Does Session Analysis send my prompts anywhere?</summary>
+            <div class="scan-faq-body">No. It reads only your local Claude Code transcripts for the repo you run it in, processes them entirely on your machine with no LLM calls, redacts prompt snippets by default (<code class="scan-inline">[redacted 20ch #hash]</code>), never runs in CI, and never touches the score.</div>
+          </details>
+          <details>
+            <summary>Why should I trust LLM-judged findings?</summary>
+            <div class="scan-faq-body">You shouldn't, blindly — that's why the core scan never calls a model. The opt-in ai-scan tier runs its judge multiple times and keeps only findings that survive a majority vote; everything else is explicitly labeled low-confidence instead of being silently included.</div>
+          </details>
+          <details>
+            <summary>Who decided these thresholds?</summary>
+            <div class="scan-faq-body">Each one has a documented derivation — research anchors where the literature provides them, reference-repo calibration where it doesn't — and a fixture suite that fails CI if a weak repo shape starts scoring like a mature one. Full story on the <a href="scan-calibration.html">calibration page</a>.</div>
+          </details>
+          <details>
+            <summary>How is this different from AgentLint or agnix?</summary>
+            <div class="scan-faq-body">They're good tools, and we say so. The short version: paniolo-scan measures cross-harness sharing and always-loaded context budget (which no peer reports), scans application code at the LLM boundary, and stays strictly diagnostic. The longer, fair version is on the <a href="scan-compare.html">comparison page</a>.</div>
+          </details>
+          <details>
+            <summary>Skill, slash command, or CLI?</summary>
+            <div class="scan-faq-body">CLI for CI and headless use. The portable skill (<code class="scan-inline">npx skills add paniolo-ai/scan --all</code>) for any coding agent. The Claude Code plugin if you specifically want the native <code class="scan-inline">/paniolo-scan</code> command. They're separate installs — the <a href="scan-docs.html">docs</a> have a decision tree.</div>
+          </details>
+        </div>
+
+        <div class="scan-goodwill">
+          <div class="scan-goodwill-title">Goodwill service</div>
+          <p><code class="scan-inline">@paniolo/scan</code> and the remediation prompts are a free community starting point. Self-service AI fixes will not match a human-tuned intelligence layer — <a href="../index.html#contact">Paniolo's professional services</a> are recommended for production-grade work. The free tier stays genuinely useful; this is honest guidance, not a gate.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="about-cta">
+      <div class="container about-cta-inner">
+        <div>
+          <p class="about-cta-headline">Sixty seconds to your first score.</p>
+          <p class="about-cta-sub">npx @paniolo/scan — diagnostic only, safe anywhere</p>
+        </div>
+        <a href="scan-docs.html" class="btn-primary">
+          Quick Start
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">Paniolo</div>
+          <div class="footer-tagline">Precision Infrastructure for AI Engineering</div>
+          <div class="footer-location">New York · Honolulu, Hawaiʻi</div>
+        </div>
+        <nav aria-label="Footer navigation">
+          <ul class="footer-links" role="list">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="scan-docs.html">Scan Docs</a></li>
+            <li><a href="scan-research.html">Scan Research</a></li>
+            <li><a href="https://bkinsey808.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a></li>
+            <li><a href="../index.html#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-copy">© 2026 Paniolo · New York &amp; Honolulu, Hawaiʻi</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

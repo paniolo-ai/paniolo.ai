@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="@paniolo/scan documentation — quick start, install matrix, report reference, tiers, CI cookbook, privacy, and troubleshooting for the AI Technical Debt Scanner." />
+  <title>Scan Docs — @paniolo/scan — Paniolo</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/scan.css" />
+</head>
+<body>
+
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="../index.html" class="nav-logo" aria-label="Paniolo home">
+        <span class="nav-logo-word">Paniolo</span>
+        <span class="nav-logo-tagline">Harness Engineering</span>
+      </a>
+      <ul class="nav-links" id="nav-menu" role="list">
+        <li><a href="../index.html#principles">Principles</a></li>
+        <li><a href="../index.html#research">Research</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="../index.html#contact" class="nav-cta">Get Early Access</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="scan-subnav" aria-label="Scan pages">
+    <div class="container scan-subnav-inner">
+      <span class="scan-subnav-label">@paniolo/scan</span>
+      <a href="scan.html">Overview</a>
+      <a href="scan-docs.html" aria-current="page">Docs</a>
+      <a href="scan-research.html">Research</a>
+      <a href="scan-calibration.html">Calibration</a>
+      <a href="scan-compare.html">Compare</a>
+    </div>
+  </div>
+
+  <main>
+
+    <section class="hero scan-hero" aria-labelledby="docs-headline">
+      <div class="container">
+        <div class="hero-eyebrow">
+          <div class="hero-eyebrow-line" aria-hidden="true"></div>
+          <span class="label">Documentation</span>
+        </div>
+        <h1 class="hero-headline" id="docs-headline" style="font-size:clamp(2.2rem,4vw,3.5rem);">Using <em>@paniolo/scan</em></h1>
+        <p class="hero-subhead" style="max-width:60ch;">Everything below works without Claude, without an API key, and without modifying your repo. The core scan is a deterministic, offline CLI; the agent and AI tiers are strictly opt-in layers on top.</p>
+      </div>
+    </section>
+
+    <!-- QUICK START -->
+    <section class="scan-section scan-section-alt" aria-labelledby="qs-title">
+      <div class="container scan-prose">
+        <span class="label">60-Second Quick Start</span>
+        <h2 class="section-title" id="qs-title" style="font-size:2rem;">Run it now</h2>
+        <div class="scan-code"><code><span class="c"># 1. Scan the repo you're in (terminal report)</span>
+npx @paniolo/scan
+
+<span class="c"># 2. Machine-readable report for CI or tooling</span>
+npx @paniolo/scan --format json
+
+<span class="c"># 3. Gate on severity (exit 1 when findings ≥ level)</span>
+npx @paniolo/scan --fail-on warn</code></div>
+        <p>You get: detected harnesses, a guidance-file inventory, shared-vs-duplicated analysis, six dimension scores rolled into a <code class="scan-inline">total_score</code> (0–100), a per-harness gap matrix, and findings with concrete hints. A typical repo scans in seconds — it's filesystem and markdown parsing, no network, no model calls.</p>
+        <p><strong>Core vs. extended, in one sentence:</strong> the <em>core</em> scan is deterministic and always comparable across repos; the <em>extended</em> tiers (AI review, Session Analysis) are opt-in, run only when you invoke them, and never change the core score.</p>
+      </div>
+    </section>
+
+    <!-- INSTALL MATRIX -->
+    <section class="scan-section" aria-labelledby="install-title">
+      <div class="container scan-prose">
+        <span class="label">Install Matrix</span>
+        <h2 class="section-title" id="install-title" style="font-size:2rem;">Four ways in</h2>
+        <div class="scan-table-wrap">
+          <table class="scan-table">
+            <thead>
+              <tr><th scope="col">Channel</th><th scope="col">Install</th><th scope="col">What you get</th><th scope="col">Best for</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>npm CLI</strong></td>
+                <td><code class="scan-inline">npx @paniolo/scan</code></td>
+                <td>The diagnostic scanner itself. Zero install, zero writes.</td>
+                <td>First scan, CI, scripts, headless use</td>
+              </tr>
+              <tr>
+                <td><strong>Portable skill</strong></td>
+                <td><code class="scan-inline">npx skills add paniolo-ai/scan --all</code></td>
+                <td>A <code class="scan-inline">paniolo-scan</code> skill in every skill-capable coding agent on your machine (Claude Code, Cursor, Copilot, Codex, Devin, Gemini CLI, and more). Your agent runs the scan, presents scores, and remediates findings you pick.</td>
+                <td>Widest reach across agents</td>
+              </tr>
+              <tr>
+                <td><strong>Claude Code plugin</strong></td>
+                <td><code class="scan-inline">/plugin marketplace add https://github.com/paniolo-ai/scan</code><br /><code class="scan-inline">/plugin install paniolo-scan@paniolo-ai</code></td>
+                <td>The native <code class="scan-inline">/paniolo-scan</code> slash command (bundles the skill). Includes the in-session AI review step.</td>
+                <td>Claude Code users who want the slash command</td>
+              </tr>
+              <tr>
+                <td><strong>GitHub Action</strong></td>
+                <td><code class="scan-inline">uses: paniolo-ai/scan@v0.1.0</code></td>
+                <td>A composite action wrapping the CLI with <code class="scan-inline">fail-on</code>, <code class="scan-inline">harness</code>, <code class="scan-inline">path</code>, and <code class="scan-inline">args</code> inputs.</td>
+                <td>Continuous gating on every PR</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Skill vs. slash command — two separate installs.</strong> The skills.sh command installs the portable skill, which works in every agent (in Claude Code you invoke it by name, not as <code class="scan-inline">/paniolo-scan</code>). The native slash command ships only through the Claude Code plugin. Installing one does not install the other.</p>
+      </div>
+    </section>
+
+    <!-- VERIFIED FLAGS -->
+    <section class="scan-section scan-section-alt" aria-labelledby="flags-title">
+      <div class="container scan-prose">
+        <span class="label">CLI Reference</span>
+        <h2 class="section-title" id="flags-title" style="font-size:2rem;">Every flag, verified</h2>
+        <p>This table is generated against the CLI's own <code class="scan-inline">--help</code> output — if a flag isn't here, it doesn't exist.</p>
+        <div class="scan-table-wrap">
+          <table class="scan-table">
+            <thead><tr><th scope="col">Flag</th><th scope="col">What it does</th></tr></thead>
+            <tbody>
+              <tr><td><code class="scan-inline">--harness &lt;list&gt;</code></td><td>Comma-separated harness filter for rule findings: <code class="scan-inline">copilot,cursor,codex,antigravity,claude,gemini</code>. Inventory, sharing, gap matrix, and optimization still evaluate all detected harnesses so JSON stays comparable.</td></tr>
+              <tr><td><code class="scan-inline">--format &lt;type&gt;</code></td><td><code class="scan-inline">terminal</code> (default) or <code class="scan-inline">json</code>.</td></tr>
+              <tr><td><code class="scan-inline">--fail-on &lt;level&gt;</code></td><td>Exit 1 when findings at or above level exist: <code class="scan-inline">error</code> (default), <code class="scan-inline">warn</code>, or <code class="scan-inline">info</code>.</td></tr>
+              <tr><td><code class="scan-inline">--emit-ai-tasks</code></td><td>Print the opt-in AI-review prompt tasks as JSON, then exit. No scan, no model calls — the tasks are bounded prompts your agent answers in its own session.</td></tr>
+              <tr><td><code class="scan-inline">--ingest-ai-results &lt;f&gt;</code></td><td>Validate and fold AI-review answers from file <code class="scan-inline">f</code> into the report's separate AI dimension. Malformed output hard-fails; it is never silently scored.</td></tr>
+              <tr><td><code class="scan-inline">--session-analysis</code></td><td>Mine this repo's local Claude Code session logs for recurring instructions, ignored rules, and friction, then exit. No scan, no LLM, no score impact.</td></tr>
+              <tr><td><code class="scan-inline">--session-root &lt;path&gt;</code></td><td>Override the session-log root (default <code class="scan-inline">~/.claude/projects</code>).</td></tr>
+              <tr><td><code class="scan-inline">--max-sessions &lt;n&gt;</code></td><td>Most-recent session logs to analyze (default 30).</td></tr>
+              <tr><td><code class="scan-inline">--include-raw-snippets</code></td><td>Show raw prompt snippets in Session Analysis output instead of redacting them. Redaction is the default.</td></tr>
+              <tr><td><code class="scan-inline">-h, --help</code></td><td>Show help.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Version note: everything documented here ships in <strong>0.2.0</strong> (published June 2026). The security-hygiene batch and continuous scoring date back to 0.1.x; Session Analysis, the failure-mode exposure view, the LLM-boundary and security-posture rules, and the consistency-gated Deep Analysis trio arrived in 0.2.0 — if a flag above is missing from your installed version, update with <code class="scan-inline">npx @paniolo/scan@latest</code>.</p>
+      </div>
+    </section>
+
+    <!-- REPORT FIELDS -->
+    <section class="scan-section" aria-labelledby="fields-title">
+      <div class="container scan-prose">
+        <span class="label">Report Reference</span>
+        <h2 class="section-title" id="fields-title" style="font-size:2rem;">Reading the JSON</h2>
+        <div class="scan-table-wrap">
+          <table class="scan-table">
+            <thead><tr><th scope="col">Field</th><th scope="col">Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code class="scan-inline">total_score</code></td><td>0–100 rollup across the core meta-harness dimensions. Grades: excellent ≥ 85, good ≥ 70, fair ≥ 50.</td></tr>
+              <tr><td><code class="scan-inline">score_scope</code></td><td><code class="scan-inline">"core"</code> when only deterministic dimensions ran; widens only if extended results were ingested. Compare scores across repos only within the same scope.</td></tr>
+              <tr><td><code class="scan-inline">harnesses</code></td><td>Tools the repo appears to target, inferred from filesystem signals (e.g. <code class="scan-inline">CLAUDE.md</code>, <code class="scan-inline">.cursor/</code>, <code class="scan-inline">.codex/config.toml</code>).</td></tr>
+              <tr><td><code class="scan-inline">metaHarness.dimensions</code></td><td>Per-dimension <code class="scan-inline">status</code>/<code class="scan-inline">score</code>/<code class="scan-inline">grade</code>. A dimension that did not run is <code class="scan-inline">null</code> — never zero.</td></tr>
+              <tr><td><code class="scan-inline">sharing</code></td><td>Shared vs. harness-unique guidance in files, lines, and percent — the cross-harness duplication measure.</td></tr>
+              <tr><td><code class="scan-inline">contextBudget</code></td><td>Estimated always-loaded lines and tokens per harness, with a recommended ceiling and status.</td></tr>
+              <tr><td><code class="scan-inline">failureModeExposure</code></td><td>Findings grouped by predicted runtime failure class (Memory, Reflection, Planning, Action, System Operation) — which classes of agent failure your repo is most exposed to.</td></tr>
+              <tr><td><code class="scan-inline">findings[]</code></td><td>Rule violations: <code class="scan-inline">ruleId</code>, <code class="scan-inline">severity</code> (<span class="sev sev-error">error</span> <span class="sev sev-warn">warn</span> <span class="sev sev-info">info</span>), <code class="scan-inline">message</code>, <code class="scan-inline">file</code>, and a concrete <code class="scan-inline">hint</code>.</td></tr>
+              <tr><td><code class="scan-inline">aiReview</code></td><td>The opt-in AI dimension. <code class="scan-inline">"status": "not-run"</code> by default; scored only when results are ingested. It can never trip the CI gate.</td></tr>
+              <tr><td><code class="scan-inline">harnessGapMatrix</code> / <code class="scan-inline">harnessOptimization</code></td><td>Capability table and 0–100 optimization score per detected harness, plus each harness's guidance footprint.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="annotated-sample">Annotated sample (real output)</h3>
+        <p>From an actual run against SongShare Effect, a mature six-harness repo:</p>
+        <div class="scan-code"><code>{
+  "total_score": 90,            <span class="c">// core rollup — "excellent" band starts at 85</span>
+  "score_scope": "core",        <span class="c">// no extended results ingested → core-only score</span>
+  "summary": { "error": 0, "warn": 4, "info": 7 },
+  "metaHarness": {
+    "dimensions": {
+      "layering":  { "status": "run", "score": 100, "grade": "excellent",
+                     "passedRules": 8, "applicableRules": 8 },
+      "sharing":   { "status": "run", "score": 100, "grade": "excellent" },
+      "maintainability": { "status": "run", "score": 71, "grade": "good",
+                     "passedRules": 15, "applicableRules": 21 },
+      "session": null,          <span class="c">// opt-in tier not run — excluded, not zeroed</span>
+      "deep": null
+    }
+  },
+  "aiReview": { "status": "not-run", "score": null, "grade": "not-run" }
+}</code></div>
+      </div>
+    </section>
+
+    <!-- TIER DECISION TREE -->
+    <section class="scan-section scan-section-alt" aria-labelledby="tiers-title">
+      <div class="container scan-prose">
+        <span class="label">Tiers</span>
+        <h2 class="section-title" id="tiers-title" style="font-size:2rem;">Which tier, when</h2>
+        <div class="scan-tree" role="img" aria-label="Tier decision tree">
+Do you need a comparable score or a CI gate?
+└─ yes → CORE SCAN: npx @paniolo/scan [--format json --fail-on error]
+         deterministic · offline · byte-for-byte reproducible
+
+Do you want semantic findings (contradictions, adapter drift,
+dead weight, vague rules) judged in your agent's own session?
+└─ yes → AI-SCAN (opt-in, fenced):
+         1. npx @paniolo/scan --emit-ai-tasks &gt; tasks.json
+         2. your agent answers the bounded tasks (JSON only)
+         3. npx @paniolo/scan --ingest-ai-results results.json
+         findings consistency-gated · separate dimension · never trips CI
+
+Do you want to know what keeps going wrong in your own sessions?
+└─ yes → SESSION ANALYSIS (opt-in, local-only):
+         npx @paniolo/scan --session-analysis
+         LLM-free · local logs only · redacted by default · no score impact</div>
+
+        <h3 id="flags-tree">"Which flags should I use?"</h3>
+        <div class="scan-table-wrap">
+          <table class="scan-table">
+            <thead><tr><th scope="col">You want…</th><th scope="col">Run</th></tr></thead>
+            <tbody>
+              <tr><td>A first look at one repo</td><td><code class="scan-inline">npx @paniolo/scan</code></td></tr>
+              <tr><td>A CI gate that blocks on serious issues</td><td><code class="scan-inline">npx @paniolo/scan --format json --fail-on error</code></td></tr>
+              <tr><td>A stricter gate including warnings</td><td><code class="scan-inline">npx @paniolo/scan --fail-on warn</code></td></tr>
+              <tr><td>Only Cursor + Codex findings</td><td><code class="scan-inline">npx @paniolo/scan --harness cursor,codex</code></td></tr>
+              <tr><td>To scan a different directory</td><td><code class="scan-inline">npx @paniolo/scan ../other-repo</code></td></tr>
+              <tr><td>Your sessions' friction, privately</td><td><code class="scan-inline">npx @paniolo/scan --session-analysis</code></td></tr>
+              <tr><td>Session detail with raw snippets (your eyes only)</td><td><code class="scan-inline">npx @paniolo/scan --session-analysis --include-raw-snippets</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKFLOWS -->
+    <section class="scan-section" aria-labelledby="wf-title">
+      <div class="container scan-prose">
+        <span class="label">Workflows</span>
+        <h2 class="section-title" id="wf-title" style="font-size:2rem;">Common flows, end to end</h2>
+
+        <h3>CLI only (no agent)</h3>
+        <div class="scan-code"><code>npx @paniolo/scan --format json &gt; paniolo-report.json</code></div>
+        <p>Expected: JSON to stdout, exit 0 unless <code class="scan-inline">--fail-on</code> matched. If you see <code class="scan-inline">"harnesses": []</code>, no tool config was detected — baseline rules (like a missing <code class="scan-inline">AGENTS.md</code>) still run, which is the point: the scan tells you what to add first.</p>
+
+        <h3>Per-harness skill (any agent)</h3>
+        <div class="scan-code"><code>npx skills add paniolo-ai/scan --all
+<span class="c"># then, in your agent:</span>
+<span class="c">"Use paniolo-scan to scan this repo and summarize findings."</span></code></div>
+        <p>The skill runs <code class="scan-inline">npx --yes @paniolo/scan --format json</code>, presents dimension scores, surfaces the goodwill framing, then remediates the findings you pick and re-scans. Troubleshooting: if the agent can't find the skill, confirm with <code class="scan-inline">npx skills add paniolo-ai/scan --list</code>, and on Windows/Docker prefer <code class="scan-inline">--copy</code> over symlinks.</p>
+
+        <h3>Claude Code plugin (slash command)</h3>
+        <div class="scan-code"><code>/plugin marketplace add https://github.com/paniolo-ai/scan
+/plugin install paniolo-scan@paniolo-ai
+/paniolo-scan</code></div>
+        <p>Same flow, plus the in-session AI review step (below). This channel does not go through skills.sh.</p>
+
+        <h3>With ai-scan (fenced AI review)</h3>
+        <div class="scan-code"><code>npx @paniolo/scan --emit-ai-tasks &gt; paniolo-ai-tasks.json
+<span class="c"># your agent's subagents answer each bounded task with JSON only</span>
+npx @paniolo/scan --ingest-ai-results paniolo-ai-results.json --format json</code></div>
+        <p>Five checks ship: contradiction, adapter fidelity, security review, dead weight, and vague rules. Each emitted task embeds its target file contents, so the answering subagent needs no filesystem access. Ingest validates strictly: malformed answers exit non-zero with a precise message. Findings that don't survive the multi-run consistency vote are labeled low-confidence. Without ai-scan, nothing changes — the <code class="scan-inline">aiReview</code> block stays <code class="scan-inline">not-run</code> and the core report is identical.</p>
+
+        <h3>Session Analysis</h3>
+        <div class="scan-code"><code>npx @paniolo/scan --session-analysis --format json</code></div>
+        <p>Real output from a real repo (5 sessions analyzed, redaction on):</p>
+        <div class="scan-code"><code>{
+  "tier": "extended",
+  "status": "run",
+  "sessionsAnalyzed": 5,
+  "redacted": true,
+  "findings": [
+    { "checkId": "SS1", "name": "Repeated instructions",
+      "detail": "Repeated prompt [redacted 20ch #3f4b3580] seen in 4 sessions (5 times)" },
+    { "checkId": "SS3", "name": "Friction hotspots",
+      "detail": "1 corrections across 1 of 5 sessions (0.20 per session)" }
+  ]
+}</code></div>
+        <p>SS1 = instructions you re-type, SS2 = committed rules the agent ignored, SS3 = friction hotspots, SS4 = rule suggestions for instructions that aren't in your guidance yet. Troubleshooting: "no session directory found" means no local Claude Code logs exist for this repo path — it reads only <code class="scan-inline">~/.claude/projects/&lt;encoded-repo-path&gt;/</code>, never other projects' logs.</p>
+
+        <h3>Security and failure-mode views</h3>
+        <div class="scan-code"><code>npx @paniolo/scan --fail-on warn   <span class="c"># surface guardrail findings prominently</span></code></div>
+        <p>Security-hygiene and posture findings appear in the guardrails dimension; the failure-mode exposure section ranks the runtime failure classes (Memory, Reflection, Planning, Action, System Operation) your findings predict. A repo can score well overall and still be concentrated in one class — that concentration is the actionable signal.</p>
+
+        <h3>The remediation loop</h3>
+        <p>Scan → present → remediate → re-scan. The CLI diagnoses; your agent (via the skill or slash command) applies fixes in your working tree, then re-runs the scan to verify the score moved. The scanner itself never writes — if a "fix" appears without your agent doing it, file a bug.</p>
+      </div>
+    </section>
+
+    <!-- CI COOKBOOK -->
+    <section class="scan-section scan-section-alt" aria-labelledby="ci-title">
+      <div class="container scan-prose">
+        <span class="label">CI Cookbook</span>
+        <h2 class="section-title" id="ci-title" style="font-size:2rem;">Gate every PR</h2>
+        <div class="scan-code"><code>name: paniolo-scan
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: paniolo-ai/scan@v0.1.0
+        with:
+          fail-on: error</code></div>
+        <p>Inputs: <code class="scan-inline">fail-on</code> (error/warn/info), <code class="scan-inline">harness</code> (filter), <code class="scan-inline">path</code> (subdirectory), <code class="scan-inline">args</code> (extra CLI flags — unknown flags fail the run). The action is pre-1.0: pin an exact tag. Or skip the action entirely:</p>
+        <div class="scan-code"><code>npx --yes @paniolo/scan --format json --fail-on error</code></div>
+        <p>Exit codes are stable: 0 clean, 1 findings at/above threshold. The JSON report is a versioned interface — archive it as a build artifact and diff scores over time. Note the AI review dimension never trips CI, by design: only deterministic findings gate.</p>
+        <p>Pre-commit variant:</p>
+        <div class="scan-code"><code><span class="c"># .husky/pre-commit (or any hook runner)</span>
+npx --yes @paniolo/scan --fail-on error || exit 1</code></div>
+      </div>
+    </section>
+
+    <!-- PRIVACY -->
+    <section class="scan-section" aria-labelledby="privacy-title">
+      <div class="container scan-prose">
+        <span class="label">Privacy &amp; Data Boundaries</span>
+        <h2 class="section-title" id="privacy-title" style="font-size:2rem;">What it reads, what it never does</h2>
+        <div class="scan-table-wrap">
+          <table class="scan-table">
+            <thead><tr><th scope="col">Surface</th><th scope="col">Reads</th><th scope="col">Writes</th><th scope="col">Network</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Core scan</strong></td><td>Repo files (guidance, configs, CI workflows, source for boundary rules)</td><td>Nothing</td><td>None — fully offline</td></tr>
+              <tr><td><strong>ai-scan (opt-in)</strong></td><td>Repo guidance files, embedded into task envelopes</td><td>Nothing (CLI side)</td><td>None from the CLI — model calls happen in <em>your</em> agent session, with your existing credentials</td></tr>
+              <tr><td><strong>Session Analysis (opt-in)</strong></td><td>Local Claude Code logs for this repo only (<code class="scan-inline">~/.claude/projects/&lt;encoded-repo-path&gt;/</code>)</td><td>Nothing</td><td>None — LLM-free, fully local</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li>No telemetry, no analytics, no phone-home in any tier.</li>
+          <li>Session Analysis redacts prompt snippets by default (<code class="scan-inline">[redacted 20ch #hash]</code>); <code class="scan-inline">--include-raw-snippets</code> is an explicit choice for your own terminal. It never runs as part of the standard scan or in CI, and its report is a self-contained <code class="scan-inline">tier: "extended"</code> envelope that does not touch <code class="scan-inline">total_score</code>.</li>
+          <li>Remediation file writes happen only in your agent, in your working tree, on your instruction — never in the scanner.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TROUBLESHOOTING -->
+    <section class="scan-section scan-section-alt" aria-labelledby="ts-title">
+      <div class="container scan-prose">
+        <span class="label">Troubleshooting</span>
+        <h2 class="section-title" id="ts-title" style="font-size:2rem;">When something looks wrong</h2>
+        <div class="scan-table-wrap">
+          <table class="scan-table">
+            <thead><tr><th scope="col">Symptom</th><th scope="col">Likely cause / fix</th></tr></thead>
+            <tbody>
+              <tr><td>"harnesses": [] but I use Cursor</td><td>Detection is filesystem-based (<code class="scan-inline">.cursor/</code> dir or <code class="scan-inline">chat.agentSkillsLocations</code> in <code class="scan-inline">.vscode/settings.json</code>). Global/user-level config isn't repo evidence — commit the repo-level surface.</td></tr>
+              <tr><td>A flag from these docs errors as unknown</td><td>You're on an older published version. Run <code class="scan-inline">npx @paniolo/scan@latest --help</code> and compare.</td></tr>
+              <tr><td>Score seems harsh / lenient</td><td>Read the per-dimension <code class="scan-inline">passedRules</code>/<code class="scan-inline">applicableRules</code> — the score is a pass ratio, not a penalty pile. Then see <a href="scan-calibration.html">how thresholds are derived</a>.</td></tr>
+              <tr><td>Session Analysis finds nothing</td><td>It needs 2+ sessions with recurring patterns (or heavy repetition within one). New repos and fresh machines legitimately return empty.</td></tr>
+              <tr><td><code class="scan-inline">--ingest-ai-results</code> exits non-zero</td><td>Working as designed: malformed model output is rejected with a precise message rather than silently scored. Fix or regenerate the answer file.</td></tr>
+              <tr><td>Two runs differ</td><td>Core scans are deterministic for an unchanged tree — diff the tree first. ai-scan findings are LLM-judged; that's exactly why the consistency gate exists.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ + GOODWILL -->
+    <section class="scan-section" aria-labelledby="docs-faq-title">
+      <div class="container scan-prose">
+        <span class="label">FAQ</span>
+        <h2 class="section-title" id="docs-faq-title" style="font-size:2rem;">Objections, answered</h2>
+        <div class="scan-faq">
+          <details>
+            <summary>Does scan modify my repo?</summary>
+            <div class="scan-faq-body">No. Diagnostic only: no init, no scaffolding, no autofix, no writes. That's a product boundary, not a missing feature — it's what makes the scan safe to run on any repo, including ones you don't own.</div>
+          </details>
+          <details>
+            <summary>Does Session Analysis exfiltrate my data?</summary>
+            <div class="scan-faq-body">No. Local <code class="scan-inline">.jsonl</code> logs for this repo only, processed locally, LLM-free, redacted by default, never in CI, never in the score.</div>
+          </details>
+          <details>
+            <summary>Why trust the LLM findings?</summary>
+            <div class="scan-faq-body">The core score never depends on one. Opt-in AI findings must survive a multi-run majority vote; the unstable remainder is labeled low-confidence instead of hidden.</div>
+          </details>
+          <details>
+            <summary>Who picked these thresholds?</summary>
+            <div class="scan-faq-body">Documented derivations with research anchors, locked by calibration fixtures in CI — the full methodology is published on the <a href="scan-calibration.html">calibration page</a>.</div>
+          </details>
+          <details>
+            <summary>How is this different from AgentLint / agnix / AgentLinter?</summary>
+            <div class="scan-faq-body">Fair comparison, including what each does better than us, on the <a href="scan-compare.html">compare page</a>.</div>
+          </details>
+          <details>
+            <summary>Skill vs. slash command vs. CLI?</summary>
+            <div class="scan-faq-body">CLI for CI/headless; skill for every agent via skills.sh; plugin for the native Claude Code command. See the <a href="#tiers-title">decision tree</a> above.</div>
+          </details>
+        </div>
+
+        <div class="scan-goodwill">
+          <div class="scan-goodwill-title">What's next — goodwill, stated plainly</div>
+          <p><code class="scan-inline">@paniolo/scan</code> and the remediation prompts are a free community starting point. Self-service AI fixes will not match a human-tuned intelligence layer — <a href="../index.html#contact">Paniolo's professional services</a> are recommended for production-grade work. The free tier stays genuinely useful; this is honest guidance, not a gate. If your scan surfaces deep duplication across a monorepo or dozens of recurring session frictions, that's usually the moment teams talk to us.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">Paniolo</div>
+          <div class="footer-tagline">Precision Infrastructure for AI Engineering</div>
+          <div class="footer-location">New York · Honolulu, Hawaiʻi</div>
+        </div>
+        <nav aria-label="Footer navigation">
+          <ul class="footer-links" role="list">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="scan.html">Scan Overview</a></li>
+            <li><a href="scan-research.html">Scan Research</a></li>
+            <li><a href="https://bkinsey808.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a></li>
+            <li><a href="../index.html#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-copy">© 2026 Paniolo · New York &amp; Honolulu, Hawaiʻi</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

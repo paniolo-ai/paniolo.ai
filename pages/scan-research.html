@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="The research behind @paniolo/scan — every scanner feature traced to the paper and statistic that motivated it, with honest evidence-strength labels." />
+  <title>Scan Research — @paniolo/scan — Paniolo</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/scan.css" />
+</head>
+<body>
+
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="../index.html" class="nav-logo" aria-label="Paniolo home">
+        <span class="nav-logo-word">Paniolo</span>
+        <span class="nav-logo-tagline">Harness Engineering</span>
+      </a>
+      <ul class="nav-links" id="nav-menu" role="list">
+        <li><a href="../index.html#principles">Principles</a></li>
+        <li><a href="../index.html#research">Research</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="../index.html#contact" class="nav-cta">Get Early Access</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="scan-subnav" aria-label="Scan pages">
+    <div class="container scan-subnav-inner">
+      <span class="scan-subnav-label">@paniolo/scan</span>
+      <a href="scan.html">Overview</a>
+      <a href="scan-docs.html">Docs</a>
+      <a href="scan-research.html" aria-current="page">Research</a>
+      <a href="scan-calibration.html">Calibration</a>
+      <a href="scan-compare.html">Compare</a>
+    </div>
+  </div>
+
+  <main>
+
+    <section class="hero scan-hero" aria-labelledby="research-headline">
+      <div class="container">
+        <div class="hero-eyebrow">
+          <div class="hero-eyebrow-line" aria-hidden="true"></div>
+          <span class="label">Paper → Feature → Stat</span>
+        </div>
+        <h1 class="hero-headline" id="research-headline" style="font-size:clamp(2.2rem,4vw,3.5rem);">The <em>bibliography</em><br>behind the scanner</h1>
+        <p class="hero-subhead" style="max-width:64ch;">Every headline feature in <code class="scan-inline">@paniolo/scan</code> traces to a published finding. This page is the trace — and, just as deliberately, the limits: where a number is the paper's result and not ours, we say so.</p>
+      </div>
+    </section>
+
+    <!-- HONESTY KEY -->
+    <section class="scan-section scan-section-alt" aria-labelledby="honesty-title">
+      <div class="container scan-prose">
+        <span class="label">How To Read This Page</span>
+        <h2 class="section-title" id="honesty-title" style="font-size:2rem;">Evidence strength, labeled</h2>
+        <p>Not every rule has a peer-reviewed statistic behind it, and pretending otherwise would defeat the point. Each claim below carries one of three labels:</p>
+        <ul>
+          <li><strong>Measured</strong> — a statistic from the paper's own empirical study. The paper measured the <em>problem</em>; the rule targets it. The paper did not measure our rule's detection rate.</li>
+          <li><strong>Taxonomic</strong> — the rule operationalizes a validated category or vocabulary from the paper.</li>
+          <li><strong>Ported / calibrated</strong> — engineering practice ported from prior art (AgentLint and peers) or derived from Paniolo's own reference calibration, not from a paper.</li>
+        </ul>
+        <p>One stat we deliberately do <em>not</em> claim: the ~26% task-success improvement reported for failure-targeted feedback (AgentErrorTaxonomy). That result required live trajectory feedback in the paper's environments. paniolo-scan uses the paper's <em>vocabulary</em> to label findings; it has not reproduced that outcome, and we won't imply it has.</p>
+      </div>
+    </section>
+
+    <!-- PAPERS -->
+    <section class="scan-section" aria-labelledby="papers-title">
+      <div class="container scan-prose">
+        <span class="label">The Papers</span>
+        <h2 class="section-title" id="papers-title" style="font-size:2rem;">Seven studies,<br><em>seven features</em></h2>
+
+        <h3>1. Agentic-AI fault taxonomy — arXiv:2603.06847</h3>
+        <p>385 coded faults from 13,602 issues across 40 agentic-AI repos, validated with 145 practitioners (Cronbach's α 0.91). Top root causes: <strong>Data Schema Mismatches at the LLM/tool output boundary (28.0%)</strong> and <strong>Model Interface Instability (11.6%)</strong> — together roughly 40% of sampled faults at one seam.</p>
+        <div class="scan-table-wrap"><table class="scan-table">
+          <thead><tr><th scope="col">Feeds</th><th scope="col">Rules</th><th scope="col">Strength</th></tr></thead>
+          <tbody><tr>
+            <td>LLM-boundary scanning surface</td>
+            <td><code class="scan-inline">llm-output-schema-validated</code> · <code class="scan-inline">model-interface-pinned</code> · <code class="scan-inline">tool-contract-tests-present</code></td>
+            <td><strong>Measured</strong> problem; heuristic detection (the rules surface likely exposure, they do not find "28% of faults")</td>
+          </tr></tbody>
+        </table></div>
+        <span class="scan-cite">28.0% / 11.6% — Agentic-AI fault taxonomy, arXiv 2026, <a href="https://arxiv.org/abs/2603.06847" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2603.06847</a></span>
+
+        <h3>2. Open Agent Passport — arXiv:2603.20953</h3>
+        <p>A deterministic policy gate held under adversarial pressure: in the paper's CTF, attacker success fell from <strong>74.6% under a permissive policy to 0% under a restrictive one, across 879 attempts</strong> — even when the model itself had been socially engineered. Enforcement over prose, demonstrated adversarially.</p>
+        <div class="scan-table-wrap"><table class="scan-table">
+          <thead><tr><th scope="col">Feeds</th><th scope="col">Rules</th><th scope="col">Strength</th></tr></thead>
+          <tbody><tr>
+            <td>Resource-cap and gate checks; the "deterministic gates beat prose" thesis across the guardrails dimension</td>
+            <td><code class="scan-inline">agent-resource-budget-caps</code> (OAP limits vocabulary) · motivates <code class="scan-inline">no-dangerous-auto-approve</code></td>
+            <td><strong>Measured</strong> anchor for the thesis; <strong>taxonomic</strong> for the rules</td>
+          </tr></tbody>
+        </table></div>
+        <span class="scan-cite">74.6% → 0% over 879 attempts — Open Agent Passport CTF, arXiv 2026, <a href="https://arxiv.org/abs/2603.20953" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2603.20953</a></span>
+
+        <h3>3. HiL-Bench — arXiv:2604.09408</h3>
+        <p>Frontier models drop <strong>53–82 percentage points</strong> when task specs go from complete to missing/ambiguous/blocked — and the failure is usually <em>not asking</em>. Epistemic escalation ("I should ask") is a different protocol from authorization escalation ("may I run this"), and most harnesses document neither.</p>
+        <div class="scan-table-wrap"><table class="scan-table">
+          <thead><tr><th scope="col">Feeds</th><th scope="col">Rules</th><th scope="col">Strength</th></tr></thead>
+          <tbody><tr>
+            <td>The escalation-protocol check no peer scanner has; decision-boundary motivation for vague-rule detection</td>
+            <td><code class="scan-inline">escalation-protocol-discoverability</code> · motivates ai-scan vague-rules check</td>
+            <td><strong>Measured</strong> problem; the rule checks the protocol is <em>declared</em>, not that the agent exercises judgment</td>
+          </tr></tbody>
+        </table></div>
+        <span class="scan-cite">53–82 pp — HiL-Bench, arXiv 2026, <a href="https://arxiv.org/abs/2604.09408" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2604.09408</a></span>
+
+        <h3>4. Agentic-AI attack/defense survey — arXiv:2603.11088 (USENIX Security 2026)</h3>
+        <p>A systematization of agent attack vectors (V1–V6) and risks (R1–R7) with defense categories. paniolo-scan's six security-posture rules check that defenses are <strong>declared and documented proportionate to the capability the harness grants</strong> — tool allowlists (R1/R3), untrusted-input boundaries (R2/R3), memory provenance (R6), high-impact-action confirmation (R6/R7, OWASP LLM06).</p>
+        <div class="scan-table-wrap"><table class="scan-table">
+          <thead><tr><th scope="col">Feeds</th><th scope="col">Rules</th><th scope="col">Strength</th></tr></thead>
+          <tbody><tr>
+            <td>The security-posture group (guardrails dimension)</td>
+            <td><code class="scan-inline">tool-allowlist-inventory</code> · <code class="scan-inline">untrusted-input-action-boundary</code> · <code class="scan-inline">memory-write-provenance</code> · <code class="scan-inline">high-impact-action-confirmation</code></td>
+            <td><strong>Taxonomic</strong> — conservative posture heuristics, shipped at info/warn pending severity calibration</td>
+          </tr></tbody>
+        </table></div>
+        <span class="scan-cite">Risk taxonomy R1–R7 — Attack/defense survey, USENIX Security 2026, <a href="https://arxiv.org/abs/2603.11088" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2603.11088</a></span>
+
+        <h3>5. AgentErrorTaxonomy / AgentErrorBench — arXiv:2509.25370</h3>
+        <p>A validated taxonomy of runtime agent failures — Memory, Reflection, Planning, Action, System Operation — built from real agent trajectories. Every paniolo-scan finding is tagged with the failure class it is <em>predicted</em> to prevent, and the report ranks your repo's exposure by class. The paper also reports up to ~26% task-success improvement from failure-targeted feedback in its environments — a result about live trajectory feedback, which we cite as motivation and explicitly do not claim for static scanning.</p>
+        <div class="scan-table-wrap"><table class="scan-table">
+          <thead><tr><th scope="col">Feeds</th><th scope="col">Surface</th><th scope="col">Strength</th></tr></thead>
+          <tbody><tr>
+            <td>Failure-mode tags + exposure report view</td>
+            <td>Every finding ("Prevents: X-class agent failures") · <code class="scan-inline">failureModeExposure</code> JSON block</td>
+            <td><strong>Taxonomic</strong> — editorial mapping using the paper's validated vocabulary, reviewable in one source file</td>
+          </tr></tbody>
+        </table></div>
+        <span class="scan-cite">Failure-class taxonomy — AgentErrorTaxonomy, arXiv 2025, <a href="https://arxiv.org/abs/2509.25370" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2509.25370</a></span>
+
+        <h3>6. Reliability science for LLMs — arXiv:2602.16666</h3>
+        <p>Across 14–15 models and 18 months of releases, capability gains produced only modest reliability gains: the same task can succeed or fail run-to-run. Any LLM-judged linter inherits this — so paniolo-scan's opt-in Deep Analysis runs its judge K times and keeps only findings that survive a majority vote. Model upgrades don't automatically improve consistency, so the gate re-runs on every judge or prompt change.</p>
+        <div class="scan-table-wrap"><table class="scan-table">
+          <thead><tr><th scope="col">Feeds</th><th scope="col">Surface</th><th scope="col">Strength</th></tr></thead>
+          <tbody><tr>
+            <td>The consistency gate on ai-scan findings</td>
+            <td>K-run majority vote at <code class="scan-inline">--ingest-ai-results</code>; unstable findings labeled low-confidence</td>
+            <td><strong>Measured</strong> motivation; the gate itself is Paniolo engineering</td>
+          </tr></tbody>
+        </table></div>
+        <span class="scan-cite">Outcome-consistency findings — Reliability science, arXiv 2026, <a href="https://arxiv.org/abs/2602.16666" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2602.16666</a></span>
+
+        <h3>7. Codified Context — arXiv:2602.20478</h3>
+        <p>A production study: a <strong>~660-line always-loaded constitution validated over 283 sessions</strong> on a 108,256-line codebase, with context infrastructure totaling <strong>24.2%</strong> of the repo. These are the anchors behind paniolo-scan's context-budget defaults — and why the default ceiling (250 always-loaded lines) is deliberately tighter for typical, smaller repos.</p>
+        <div class="scan-table-wrap"><table class="scan-table">
+          <thead><tr><th scope="col">Feeds</th><th scope="col">Rules</th><th scope="col">Strength</th></tr></thead>
+          <tbody><tr>
+            <td>Context budget and always-loaded thresholds</td>
+            <td><code class="scan-inline">adapter-context-budget</code> · <code class="scan-inline">always-loaded-budget</code> · sharing analysis framing</td>
+            <td><strong>Measured</strong> reference points; <strong>calibrated</strong> defaults (derivations on the <a href="scan-calibration.html">calibration page</a>)</td>
+          </tr></tbody>
+        </table></div>
+        <span class="scan-cite">~660 lines / 283 sessions / 24.2% — Codified Context, arXiv 2026, <a href="https://arxiv.org/abs/2602.20478" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2602.20478</a></span>
+
+        <h3>And the company thesis: AHE — ICLR 2026</h3>
+        <p>Paniolo itself is grounded in <strong>Agentic Harness Engineering</strong> (ICLR 2026): harness design materially shifts task completion with the base model held fixed — ten autonomous evolution iterations lifted pass@1 from 69.7% to 77.0% using 12% fewer tokens. The scanner is that thesis in diagnostic form: if harness quality moves outcomes, harness quality deserves a score. <a href="../index.html#research">Read the AHE summary on the main site</a>.</p>
+      </div>
+    </section>
+
+    <!-- PORTED PRACTICE -->
+    <section class="scan-section scan-section-alt" aria-labelledby="ported-title">
+      <div class="container scan-prose">
+        <span class="label">Credit Where Due</span>
+        <h2 class="section-title" id="ported-title" style="font-size:2rem;">Ported practice, named</h2>
+        <p>Several paniolo-scan capabilities are engineering ports from prior art rather than paper findings, and the right citation is the tool, not a study:</p>
+        <ul>
+          <li><strong>Continuous scoring curves and not-run-isn't-zero discipline</strong> — scoring-method design ported from AgentLint's scorer (MIT), extended with <code class="scan-inline">score_scope</code>.</li>
+          <li><strong>Security-hygiene checks</strong> (auto-approve, hook exfiltration, SHA pinning, <code class="scan-inline">pull_request_target</code>, secret scanning) — detection patterns derived from AgentLint's check suite, reimplemented in paniolo-scan's deterministic rule model.</li>
+          <li><strong>Session Analysis</strong> — the session-mining concept appears in AgentLint's opt-in Session module; paniolo-scan's implementation is an independent, LLM-free pipeline (n-gram clustering via Union-Find, regex classifiers, redaction by default).</li>
+        </ul>
+        <p>This is also why the <a href="scan-compare.html">comparison page</a> reads the way it does — these tools earned the credit.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="about-cta">
+      <div class="container about-cta-inner">
+        <div>
+          <p class="about-cta-headline">See what the research finds in your repo.</p>
+          <p class="about-cta-sub">npx @paniolo/scan — free, diagnostic-only</p>
+        </div>
+        <a href="scan-docs.html" class="btn-primary">
+          Quick Start
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">Paniolo</div>
+          <div class="footer-tagline">Precision Infrastructure for AI Engineering</div>
+          <div class="footer-location">New York · Honolulu, Hawaiʻi</div>
+        </div>
+        <nav aria-label="Footer navigation">
+          <ul class="footer-links" role="list">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="scan.html">Scan Overview</a></li>
+            <li><a href="scan-docs.html">Scan Docs</a></li>
+            <li><a href="https://bkinsey808.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a></li>
+            <li><a href="../index.html#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-copy">© 2026 Paniolo · New York &amp; Honolulu, Hawaiʻi</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
