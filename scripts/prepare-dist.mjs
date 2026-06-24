@@ -1,8 +1,9 @@
 import { cpSync, existsSync, mkdirSync, rmSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = join(root, "dist");
 
 if (existsSync(join(root, "js", "main.ts"))) {
@@ -17,6 +18,7 @@ cpSync(join(root, "index.html"), join(dist, "index.html"));
 cpSync(join(root, "pages"), join(dist, "pages"), { recursive: true });
 cpSync(join(root, "css"), join(dist, "css"), { recursive: true });
 cpSync(join(root, "js", "main.js"), join(dist, "js", "main.js"));
+cpSync(join(root, "schemas"), join(dist, "schemas"), { recursive: true });
 
 const assets = join(root, "assets");
 if (existsSync(assets)) {

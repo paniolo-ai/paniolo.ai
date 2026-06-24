@@ -18,6 +18,7 @@ paniolo/
 ├── js/
 │   ├── main.ts         # TypeScript source
 │   └── main.js         # Compiled JS (browser-ready)
+├── schemas/            # Public, versioned JSON Schemas
 ├── assets/             # Drop team photos here (see comments in about.html)
 ├── tsconfig.json
 └── package.json
@@ -29,6 +30,16 @@ paniolo/
 npm install
 npm run build:ts   # compile TypeScript
 npm run dev        # serve locally on :3000
+```
+
+## Public schemas
+
+Paniolo configuration files can opt into editor validation and completion:
+
+```json
+{
+  "$schema": "https://paniolo.ai/schemas/paniolo.config.v1.json"
+}
 ```
 
 ## Adding the Team Photo

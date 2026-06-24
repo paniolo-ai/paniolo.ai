@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://paniolo.ai/schemas/paniolo.config.v1.json",
+  "title": "Paniolo configuration v1",
+  "description": "Configuration for paniolo-scan and related Paniolo tooling.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "description": "JSON Schema URL; informational only.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extends": {
+      "description": "Preset chain. Resolution is deferred; the first entry is recorded as the report profile.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "options": {
+      "description": "Global engine options.",
+      "default": {},
+      "allOf": [
+        {
+          "$ref": "#/definitions/GlobalOptions"
+        }
+      ]
+    },
+    "rules": {
+      "description": "Rule ID to severity, optionally paired with rule-specific options.",
+      "default": {},
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/RuleSetting"
+      }
+    }
+  },
+  "definitions": {
+    "FailOn": {
+      "description": "Lowest finding severity that makes the scan exit non-zero.",
+      "type": "string",
+      "enum": [
+        "info",
+        "warn",
+        "error"
+      ]
+    },
+    "GlobalOptions": {
+      "description": "Global engine options.",
+      "type": "object",
+      "properties": {
+        "failOn": {
+          "description": "Lowest severity that makes the CLI exit non-zero; overridden by --fail-on.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FailOn"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "RuleSetting": {
+      "description": "A bare severity or a [severity, options] tuple.",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/RuleSeverity"
+        },
+        {
+          "type": "array",
+          "items": [
+            {
+              "$ref": "#/definitions/RuleSeverity"
+            },
+            true
+          ],
+          "maxItems": 2,
+          "minItems": 2
+        }
+      ]
+    },
+    "RuleSeverity": {
+      "description": "Configured rule severity, including the disabled state.",
+      "type": "string",
+      "enum": [
+        "off",
+        "info",
+        "warn",
+        "error"
+      ]
+    }
+  }
+}
