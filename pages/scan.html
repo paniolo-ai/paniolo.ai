@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="@paniolo/scan — the AI Technical Debt Scanner. A free, diagnostic-only CLI that scores your repo's AI harness across six coding agents." />
+  <meta name="description" content="paniolo scan (via @paniolo/cli) — the AI Technical Debt Scanner. A free, diagnostic-only CLI that scores your repo's AI harness across six coding agents." />
   <title>Scan — AI Technical Debt Scanner — Paniolo</title>
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/scan.css" />
@@ -31,7 +31,7 @@
 
   <div class="scan-subnav" aria-label="Scan pages">
     <div class="container scan-subnav-inner">
-      <span class="scan-subnav-label">@paniolo/scan</span>
+      <span class="scan-subnav-label">paniolo scan</span>
       <a href="scan.html" aria-current="page">Overview</a>
       <a href="scan-docs.html">Docs</a>
       <a href="scan-research.html">Research</a>
@@ -56,12 +56,12 @@
             </h1>
             <p class="hero-subhead">
               Every repeated agent mistake traces back to a gap in your repo's guidance,
-              enforcement, or validation surfaces. <code class="scan-inline">@paniolo/scan</code>
+              enforcement, or validation surfaces. <code class="scan-inline">paniolo scan</code>
               finds those gaps — across Copilot, Cursor, Codex, Antigravity, Claude Code, and
               Gemini — and scores them. It reads your repo; it never writes a byte.
             </p>
             <div class="scan-code"><code><span class="c"># From any repo root — no install, no config, no writes</span>
-npx @paniolo/scan</code></div>
+npx @paniolo/cli scan</code></div>
             <div class="hero-actions">
               <a href="scan-docs.html" class="btn-primary">
                 Read the Docs
@@ -104,7 +104,7 @@ npx @paniolo/scan</code></div>
           <div class="diagram-node diagram-node-accent">
             <div class="diagram-node-icon">◈</div>
             <div class="diagram-node-title">Diagnose</div>
-            <div class="diagram-node-desc">paniolo-ai/paniolo-scan — the @paniolo/scan CLI. Scores and findings, no file writes.</div>
+            <div class="diagram-node-desc">paniolo-ai/paniolo-scan — the paniolo scan CLI. Scores and findings, no file writes.</div>
           </div>
           <div class="diagram-arrow" aria-hidden="true">→</div>
           <div class="diagram-node">
@@ -268,19 +268,19 @@ npx @paniolo/scan</code></div>
             <span class="scan-card-role">Solo developer</span>
             <h3>Mine your own friction</h3>
             <p>You've typed the same correction into your agent a dozen times. Session Analysis finds it in your local logs and tells you which rule your CLAUDE.md is missing.</p>
-            <span class="scan-card-cta">npx @paniolo/scan --session-analysis</span>
+            <span class="scan-card-cta">npx @paniolo/cli scan --session-analysis</span>
           </div>
           <div class="scan-card">
             <span class="scan-card-role">Team lead / platform</span>
             <h3>Stop guidance drift in CI</h3>
             <p>Cross-harness sharing analysis and context budgets show where six tools' instructions duplicated and diverged. JSON output and exit codes drop into any pipeline.</p>
-            <span class="scan-card-cta">npx @paniolo/scan --format json --fail-on error</span>
+            <span class="scan-card-cta">npx @paniolo/cli scan --format json --fail-on error</span>
           </div>
           <div class="scan-card">
             <span class="scan-card-role">Security / AppSec</span>
             <h3>Audit the agent attack surface</h3>
             <p>Hooks that call external hosts, blanket auto-approve, secret leaks, privilege-escalating workflows — deterministic checks grounded in the published risk taxonomies.</p>
-            <span class="scan-card-cta">npx @paniolo/scan --fail-on warn</span>
+            <span class="scan-card-cta">npx @paniolo/cli scan --fail-on warn</span>
           </div>
           <div class="scan-card">
             <span class="scan-card-role">Staff+ / architect</span>
@@ -329,7 +329,7 @@ npx @paniolo/scan</code></div>
 
         <div class="scan-goodwill">
           <div class="scan-goodwill-title">Goodwill service</div>
-          <p><code class="scan-inline">@paniolo/scan</code> and the remediation prompts are a free community starting point. Self-service AI fixes will not match a human-tuned intelligence layer — <a href="../index.html#contact">Paniolo's professional services</a> are recommended for production-grade work. The free tier stays genuinely useful; this is honest guidance, not a gate.</p>
+          <p><code class="scan-inline">paniolo scan</code> and the remediation prompts are a free community starting point. Self-service AI fixes will not match a human-tuned intelligence layer — <a href="../index.html#contact">Paniolo's professional services</a> are recommended for production-grade work. The free tier stays genuinely useful; this is honest guidance, not a gate.</p>
         </div>
       </div>
     </section>
@@ -339,7 +339,7 @@ npx @paniolo/scan</code></div>
       <div class="container about-cta-inner">
         <div>
           <p class="about-cta-headline">Sixty seconds to your first score.</p>
-          <p class="about-cta-sub">npx @paniolo/scan — diagnostic only, safe anywhere</p>
+          <p class="about-cta-sub">npx @paniolo/cli scan — diagnostic only, safe anywhere</p>
         </div>
         <a href="scan-docs.html" class="btn-primary">
           Quick Start

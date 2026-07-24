@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="@paniolo/scan documentation — quick start, install matrix, report reference, tiers, CI cookbook, privacy, and troubleshooting for the AI Technical Debt Scanner." />
-  <title>Scan Docs — @paniolo/scan — Paniolo</title>
+  <meta name="description" content="paniolo scan (via @paniolo/cli) documentation — quick start, install matrix, report reference, tiers, CI cookbook, privacy, and troubleshooting for the AI Technical Debt Scanner." />
+  <title>Scan Docs — paniolo scan — Paniolo</title>
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/scan.css" />
 </head>
@@ -31,7 +31,7 @@
 
   <div class="scan-subnav" aria-label="Scan pages">
     <div class="container scan-subnav-inner">
-      <span class="scan-subnav-label">@paniolo/scan</span>
+      <span class="scan-subnav-label">paniolo scan</span>
       <a href="scan.html">Overview</a>
       <a href="scan-docs.html" aria-current="page">Docs</a>
       <a href="scan-research.html">Research</a>
@@ -48,7 +48,7 @@
           <div class="hero-eyebrow-line" aria-hidden="true"></div>
           <span class="label">Documentation</span>
         </div>
-        <h1 class="hero-headline" id="docs-headline" style="font-size:clamp(2.2rem,4vw,3.5rem);">Using <em>@paniolo/scan</em></h1>
+        <h1 class="hero-headline" id="docs-headline" style="font-size:clamp(2.2rem,4vw,3.5rem);">Using <em>paniolo scan</em></h1>
         <p class="hero-subhead" style="max-width:60ch;">Everything below works without Claude, without an API key, and without modifying your repo. The core scan is a deterministic, offline CLI; the agent and AI tiers are strictly opt-in layers on top.</p>
       </div>
     </section>
@@ -59,13 +59,13 @@
         <span class="label">60-Second Quick Start</span>
         <h2 class="section-title" id="qs-title" style="font-size:2rem;">Run it now</h2>
         <div class="scan-code"><code><span class="c"># 1. Scan the repo you're in (terminal report)</span>
-npx @paniolo/scan
+npx @paniolo/cli scan
 
 <span class="c"># 2. Machine-readable report for CI or tooling</span>
-npx @paniolo/scan --format json
+npx @paniolo/cli scan --format json
 
 <span class="c"># 3. Gate on severity (exit 1 when findings ≥ level)</span>
-npx @paniolo/scan --fail-on warn</code></div>
+npx @paniolo/cli scan --fail-on warn</code></div>
         <p>You get: detected harnesses, a guidance-file inventory, shared-vs-duplicated analysis, six dimension scores rolled into a <code class="scan-inline">total_score</code> (0–100), a per-harness gap matrix, and findings with concrete hints. A typical repo scans in seconds — it's filesystem and markdown parsing, no network, no model calls.</p>
         <p><strong>Core vs. extended, in one sentence:</strong> the <em>core</em> scan is deterministic and always comparable across repos; the <em>extended</em> tiers (AI review, Session Analysis) are opt-in, run only when you invoke them, and never change the core score.</p>
       </div>
@@ -84,7 +84,7 @@ npx @paniolo/scan --fail-on warn</code></div>
             <tbody>
               <tr>
                 <td><strong>npm CLI</strong></td>
-                <td><code class="scan-inline">npx @paniolo/scan</code></td>
+                <td><code class="scan-inline">npx @paniolo/cli scan</code></td>
                 <td>The diagnostic scanner itself. Zero install, zero writes.</td>
                 <td>First scan, CI, scripts, headless use</td>
               </tr>
@@ -136,7 +136,7 @@ npx @paniolo/scan --fail-on warn</code></div>
             </tbody>
           </table>
         </div>
-        <p>Version note: everything documented here ships in <strong>0.2.0</strong> (published June 2026). The security-hygiene batch and continuous scoring date back to 0.1.x; Session Analysis, the failure-mode exposure view, the LLM-boundary and security-posture rules, and the consistency-gated Deep Analysis trio arrived in 0.2.0 — if a flag above is missing from your installed version, update with <code class="scan-inline">npx @paniolo/scan@latest</code>.</p>
+        <p>Version note: everything documented here ships in <strong>0.2.0</strong> (published June 2026). The security-hygiene batch and continuous scoring date back to 0.1.x; Session Analysis, the failure-mode exposure view, the LLM-boundary and security-posture rules, and the consistency-gated Deep Analysis trio arrived in 0.2.0 — if a flag above is missing from your installed version, update with <code class="scan-inline">npx @paniolo/cli scan@latest</code>.</p>
       </div>
     </section>
 
@@ -192,20 +192,20 @@ npx @paniolo/scan --fail-on warn</code></div>
         <h2 class="section-title" id="tiers-title" style="font-size:2rem;">Which tier, when</h2>
         <div class="scan-tree" role="img" aria-label="Tier decision tree">
 Do you need a comparable score or a CI gate?
-└─ yes → CORE SCAN: npx @paniolo/scan [--format json --fail-on error]
+└─ yes → CORE SCAN: npx @paniolo/cli scan [--format json --fail-on error]
          deterministic · offline · byte-for-byte reproducible
 
 Do you want semantic findings (contradictions, adapter drift,
 dead weight, vague rules) judged in your agent's own session?
 └─ yes → AI-SCAN (opt-in, fenced):
-         1. npx @paniolo/scan --emit-ai-tasks &gt; tasks.json
+         1. npx @paniolo/cli scan --emit-ai-tasks &gt; tasks.json
          2. your agent answers the bounded tasks (JSON only)
-         3. npx @paniolo/scan --ingest-ai-results results.json
+         3. npx @paniolo/cli scan --ingest-ai-results results.json
          findings consistency-gated · separate dimension · never trips CI
 
 Do you want to know what keeps going wrong in your own sessions?
 └─ yes → SESSION ANALYSIS (opt-in, local-only):
-         npx @paniolo/scan --session-analysis
+         npx @paniolo/cli scan --session-analysis
          LLM-free · local logs only · redacted by default · no score impact</div>
 
         <h3 id="flags-tree">"Which flags should I use?"</h3>
@@ -213,13 +213,13 @@ Do you want to know what keeps going wrong in your own sessions?
           <table class="scan-table">
             <thead><tr><th scope="col">You want…</th><th scope="col">Run</th></tr></thead>
             <tbody>
-              <tr><td>A first look at one repo</td><td><code class="scan-inline">npx @paniolo/scan</code></td></tr>
-              <tr><td>A CI gate that blocks on serious issues</td><td><code class="scan-inline">npx @paniolo/scan --format json --fail-on error</code></td></tr>
-              <tr><td>A stricter gate including warnings</td><td><code class="scan-inline">npx @paniolo/scan --fail-on warn</code></td></tr>
-              <tr><td>Only Cursor + Codex findings</td><td><code class="scan-inline">npx @paniolo/scan --harness cursor,codex</code></td></tr>
-              <tr><td>To scan a different directory</td><td><code class="scan-inline">npx @paniolo/scan ../other-repo</code></td></tr>
-              <tr><td>Your sessions' friction, privately</td><td><code class="scan-inline">npx @paniolo/scan --session-analysis</code></td></tr>
-              <tr><td>Session detail with raw snippets (your eyes only)</td><td><code class="scan-inline">npx @paniolo/scan --session-analysis --include-raw-snippets</code></td></tr>
+              <tr><td>A first look at one repo</td><td><code class="scan-inline">npx @paniolo/cli scan</code></td></tr>
+              <tr><td>A CI gate that blocks on serious issues</td><td><code class="scan-inline">npx @paniolo/cli scan --format json --fail-on error</code></td></tr>
+              <tr><td>A stricter gate including warnings</td><td><code class="scan-inline">npx @paniolo/cli scan --fail-on warn</code></td></tr>
+              <tr><td>Only Cursor + Codex findings</td><td><code class="scan-inline">npx @paniolo/cli scan --harness cursor,codex</code></td></tr>
+              <tr><td>To scan a different directory</td><td><code class="scan-inline">npx @paniolo/cli scan ../other-repo</code></td></tr>
+              <tr><td>Your sessions' friction, privately</td><td><code class="scan-inline">npx @paniolo/cli scan --session-analysis</code></td></tr>
+              <tr><td>Session detail with raw snippets (your eyes only)</td><td><code class="scan-inline">npx @paniolo/cli scan --session-analysis --include-raw-snippets</code></td></tr>
             </tbody>
           </table>
         </div>
@@ -233,14 +233,14 @@ Do you want to know what keeps going wrong in your own sessions?
         <h2 class="section-title" id="wf-title" style="font-size:2rem;">Common flows, end to end</h2>
 
         <h3>CLI only (no agent)</h3>
-        <div class="scan-code"><code>npx @paniolo/scan --format json &gt; paniolo-report.json</code></div>
+        <div class="scan-code"><code>npx @paniolo/cli scan --format json &gt; paniolo-report.json</code></div>
         <p>Expected: JSON to stdout, exit 0 unless <code class="scan-inline">--fail-on</code> matched. If you see <code class="scan-inline">"harnesses": []</code>, no tool config was detected — baseline rules (like a missing <code class="scan-inline">AGENTS.md</code>) still run, which is the point: the scan tells you what to add first.</p>
 
         <h3>Per-harness skill (any agent)</h3>
         <div class="scan-code"><code>npx skills add paniolo-ai/scan --all
 <span class="c"># then, in your agent:</span>
 <span class="c">"Use paniolo-scan to scan this repo and summarize findings."</span></code></div>
-        <p>The skill runs <code class="scan-inline">npx --yes @paniolo/scan --format json</code>, presents dimension scores, surfaces the goodwill framing, then remediates the findings you pick and re-scans. Troubleshooting: if the agent can't find the skill, confirm with <code class="scan-inline">npx skills add paniolo-ai/scan --list</code>, and on Windows/Docker prefer <code class="scan-inline">--copy</code> over symlinks.</p>
+        <p>The skill runs <code class="scan-inline">npx --yes @paniolo/cli scan --format json</code>, presents dimension scores, surfaces the goodwill framing, then remediates the findings you pick and re-scans. Troubleshooting: if the agent can't find the skill, confirm with <code class="scan-inline">npx skills add paniolo-ai/scan --list</code>, and on Windows/Docker prefer <code class="scan-inline">--copy</code> over symlinks.</p>
 
         <h3>Claude Code plugin (slash command)</h3>
         <div class="scan-code"><code>/plugin marketplace add https://github.com/paniolo-ai/scan
@@ -249,13 +249,13 @@ Do you want to know what keeps going wrong in your own sessions?
         <p>Same flow, plus the in-session AI review step (below). This channel does not go through skills.sh.</p>
 
         <h3>With ai-scan (fenced AI review)</h3>
-        <div class="scan-code"><code>npx @paniolo/scan --emit-ai-tasks &gt; paniolo-ai-tasks.json
+        <div class="scan-code"><code>npx @paniolo/cli scan --emit-ai-tasks &gt; paniolo-ai-tasks.json
 <span class="c"># your agent's subagents answer each bounded task with JSON only</span>
-npx @paniolo/scan --ingest-ai-results paniolo-ai-results.json --format json</code></div>
+npx @paniolo/cli scan --ingest-ai-results paniolo-ai-results.json --format json</code></div>
         <p>Five checks ship: contradiction, adapter fidelity, security review, dead weight, and vague rules. Each emitted task embeds its target file contents, so the answering subagent needs no filesystem access. Ingest validates strictly: malformed answers exit non-zero with a precise message. Findings that don't survive the multi-run consistency vote are labeled low-confidence. Without ai-scan, nothing changes — the <code class="scan-inline">aiReview</code> block stays <code class="scan-inline">not-run</code> and the core report is identical.</p>
 
         <h3>Session Analysis</h3>
-        <div class="scan-code"><code>npx @paniolo/scan --session-analysis --format json</code></div>
+        <div class="scan-code"><code>npx @paniolo/cli scan --session-analysis --format json</code></div>
         <p>Real output from a real repo (5 sessions analyzed, redaction on):</p>
         <div class="scan-code"><code>{
   "tier": "extended",
@@ -272,7 +272,7 @@ npx @paniolo/scan --ingest-ai-results paniolo-ai-results.json --format json</cod
         <p>SS1 = instructions you re-type, SS2 = committed rules the agent ignored, SS3 = friction hotspots, SS4 = rule suggestions for instructions that aren't in your guidance yet. Troubleshooting: "no session directory found" means no local Claude Code logs exist for this repo path — it reads only <code class="scan-inline">~/.claude/projects/&lt;encoded-repo-path&gt;/</code>, never other projects' logs.</p>
 
         <h3>Security and failure-mode views</h3>
-        <div class="scan-code"><code>npx @paniolo/scan --fail-on warn   <span class="c"># surface guardrail findings prominently</span></code></div>
+        <div class="scan-code"><code>npx @paniolo/cli scan --fail-on warn   <span class="c"># surface guardrail findings prominently</span></code></div>
         <p>Security-hygiene and posture findings appear in the guardrails dimension; the failure-mode exposure section ranks the runtime failure classes (Memory, Reflection, Planning, Action, System Operation) your findings predict. A repo can score well overall and still be concentrated in one class — that concentration is the actionable signal.</p>
 
         <h3>The remediation loop</h3>
@@ -302,11 +302,11 @@ jobs:
         with:
           fail-on: error</code></div>
         <p>Inputs: <code class="scan-inline">fail-on</code> (error/warn/info), <code class="scan-inline">harness</code> (filter), <code class="scan-inline">path</code> (subdirectory), <code class="scan-inline">args</code> (extra CLI flags — unknown flags fail the run). The action is pre-1.0: pin an exact tag. Or skip the action entirely:</p>
-        <div class="scan-code"><code>npx --yes @paniolo/scan --format json --fail-on error</code></div>
+        <div class="scan-code"><code>npx --yes @paniolo/cli scan --format json --fail-on error</code></div>
         <p>Exit codes are stable: 0 clean, 1 findings at/above threshold. The JSON report is a versioned interface — archive it as a build artifact and diff scores over time. Note the AI review dimension never trips CI, by design: only deterministic findings gate.</p>
         <p>Pre-commit variant:</p>
         <div class="scan-code"><code><span class="c"># .husky/pre-commit (or any hook runner)</span>
-npx --yes @paniolo/scan --fail-on error || exit 1</code></div>
+npx --yes @paniolo/cli scan --fail-on error || exit 1</code></div>
       </div>
     </section>
 
@@ -343,7 +343,7 @@ npx --yes @paniolo/scan --fail-on error || exit 1</code></div>
             <thead><tr><th scope="col">Symptom</th><th scope="col">Likely cause / fix</th></tr></thead>
             <tbody>
               <tr><td>"harnesses": [] but I use Cursor</td><td>Detection is filesystem-based (<code class="scan-inline">.cursor/</code> dir or <code class="scan-inline">chat.agentSkillsLocations</code> in <code class="scan-inline">.vscode/settings.json</code>). Global/user-level config isn't repo evidence — commit the repo-level surface.</td></tr>
-              <tr><td>A flag from these docs errors as unknown</td><td>You're on an older published version. Run <code class="scan-inline">npx @paniolo/scan@latest --help</code> and compare.</td></tr>
+              <tr><td>A flag from these docs errors as unknown</td><td>You're on an older published version. Run <code class="scan-inline">npx @paniolo/cli scan@latest --help</code> and compare.</td></tr>
               <tr><td>Score seems harsh / lenient</td><td>Read the per-dimension <code class="scan-inline">passedRules</code>/<code class="scan-inline">applicableRules</code> — the score is a pass ratio, not a penalty pile. Then see <a href="scan-calibration.html">how thresholds are derived</a>.</td></tr>
               <tr><td>Session Analysis finds nothing</td><td>It needs 2+ sessions with recurring patterns (or heavy repetition within one). New repos and fresh machines legitimately return empty.</td></tr>
               <tr><td><code class="scan-inline">--ingest-ai-results</code> exits non-zero</td><td>Working as designed: malformed model output is rejected with a precise message rather than silently scored. Fix or regenerate the answer file.</td></tr>
@@ -388,7 +388,7 @@ npx --yes @paniolo/scan --fail-on error || exit 1</code></div>
 
         <div class="scan-goodwill">
           <div class="scan-goodwill-title">What's next — goodwill, stated plainly</div>
-          <p><code class="scan-inline">@paniolo/scan</code> and the remediation prompts are a free community starting point. Self-service AI fixes will not match a human-tuned intelligence layer — <a href="../index.html#contact">Paniolo's professional services</a> are recommended for production-grade work. The free tier stays genuinely useful; this is honest guidance, not a gate. If your scan surfaces deep duplication across a monorepo or dozens of recurring session frictions, that's usually the moment teams talk to us.</p>
+          <p><code class="scan-inline">paniolo scan</code> and the remediation prompts are a free community starting point. Self-service AI fixes will not match a human-tuned intelligence layer — <a href="../index.html#contact">Paniolo's professional services</a> are recommended for production-grade work. The free tier stays genuinely useful; this is honest guidance, not a gate. If your scan surfaces deep duplication across a monorepo or dozens of recurring session frictions, that's usually the moment teams talk to us.</p>
         </div>
       </div>
     </section>
